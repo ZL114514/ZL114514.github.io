@@ -429,7 +429,9 @@ def render(post, media, videos, manual_cats):
     parts = post.get("parts") or [{"text": post["text"], "n_photos": len(media),
                                    "videos": videos, "docs": post["docs"], "link": post["link"]}]
     n = 0
-    for part in parts:                       # 同段合并时按原顺序交叉排：每条文字紧跟其媒体
+    for idx, part in enumerate(parts):       # 同段合并时按原顺序交叉排：每条文字紧跟其媒体
+        if idx:
+            body.append("")                  # 合并的多条消息之间留空行，否则 markdown 会折成一段
         for _ in range(part["n_photos"]):
             rel = next(it, None)
             if rel:
