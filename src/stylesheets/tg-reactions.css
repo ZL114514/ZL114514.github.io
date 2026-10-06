@@ -1,0 +1,43 @@
+/* TG 风格 reaction 条：跟随 Material 主题的配色变量，深浅色都好看 */
+.tg-rx {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: 1.2rem 0 .6rem;
+}
+
+.tg-rx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .22rem .6rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 1rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font-size: .72rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: border-color .15s, background-color .15s, transform .1s;
+}
+
+.tg-rx-btn:hover {
+  border-color: var(--md-accent-fg-color);
+  background: var(--md-accent-fg-color--transparent);
+}
+
+.tg-rx-btn:active { transform: scale(.96); }
+
+.tg-rx-btn:disabled { opacity: .55; cursor: progress; }
+
+.tg-rx-btn.on {
+  border-color: var(--md-accent-fg-color);
+  background: var(--md-accent-fg-color--transparent);
+  color: var(--md-accent-fg-color);
+}
+
+.tg-rx-e { font-size: .85rem; }
+
+.tg-rx-n { font-variant-numeric: tabular-nums; opacity: .85; }
+
+.tg-rx-tip { font-size: .68rem; color: var(--md-default-fg-color--light); }

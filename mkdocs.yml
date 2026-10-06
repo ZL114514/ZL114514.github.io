@@ -110,6 +110,10 @@ markdown_extensions:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/md3-expressive.css
+  - stylesheets/tg-reactions.css
+
+extra_javascript:
+  - javascripts/tg-reactions.js
 
 extra:
   generator: false
