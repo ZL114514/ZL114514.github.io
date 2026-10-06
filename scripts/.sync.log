@@ -1938,3 +1938,228 @@ Prefix dict has been built successfully.
 INFO    -  Documentation built in 3.03 seconds
 待部署文件：555
 X99 镜像更新完成（555 个文件）
+warning: in the working copy of 'scripts/.sync.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'scripts/.tg_state.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'scripts/tg-review.md', CRLF will be replaced by LF the next time Git touches it
+已推送到 GitHub
+=== 2026-10-07 02:47:39 完成 ===
+=== 2026-10-07 02:47:44 同步开始 ===
+已知帖子 273 条，开始抓取（全量）
+  page 1   315..334  new=15
+  page 2   293..314  new=17
+  page 3   273..292  new=20
+  page 4   252..271  new=17
+  page 5   223..251  new=17
+  page 6   203..222  new=17
+  page 7   178..202  new=18
+  page 8   157..177  new=19
+  page 9   132..156  new=19
+  page 10  112..131  new=20
+  page 11  91..111  new=16
+  page 12  70..90  new=16
+  page 13  50..69  new=18
+  page 14  29..49  new=17
+  page 15  8..28  new=20
+  page 16  1..7  new=7
+抓到 273 条 -> 合并后 215 条（40 条为同段聚合）
+新增 0 / 更新 41 / 跳过 174 | 媒体 12 张 0.4 MB | 视频 125.0 MB
+reaction 播种 130 条帖子 -> scripts/tg-reactions-seed.json
+待确认分类 188 条 -> scripts/tg-review.md
+reaction 播种完成：0 项（服务器现有 130 个帖子）
+
+ │  ⚠  Warning from the Material for MkDocs team
+ │
+ │  MkDocs 2.0, the underlying framework of Material for MkDocs,
+ │  will introduce backward-incompatible changes, including:
+ │
+ │  × All plugins will stop working – the plugin system has been removed
+ │  × All theme overrides will break – the theming system has been rewritten
+ │  × No migration path exists – existing projects cannot be upgraded
+ │  × Closed contribution model – community members can't report bugs
+ │  × Currently unlicensed – unsuitable for production use
+ │
+ │  Our full analysis:
+ │
+ │  https://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/
+
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: C:\Users\ZL\Documents\ZL114514.github.io\docs
+INFO    -  Doc file 'blog/posts/tg-100.md' contains an absolute link '/assets/tg/100/1.jpg', it was left as is. Did you mean '../../assets/tg/100/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-101.md' contains an absolute link '/assets/tg/101/1.jpg', it was left as is. Did you mean '../../assets/tg/101/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-102.md' contains an absolute link '/assets/tg/102/1.jpg', it was left as is. Did you mean '../../assets/tg/102/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-103.md' contains an absolute link '/assets/tg/103/1.jpg', it was left as is. Did you mean '../../assets/tg/103/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-103.md' contains an absolute link '/assets/tg/103/2.jpg', it was left as is. Did you mean '../../assets/tg/103/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-109.md' contains an absolute link '/assets/tg/109/1.jpg', it was left as is. Did you mean '../../assets/tg/109/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-111.md' contains an absolute link '/assets/tg/111/1.jpg', it was left as is. Did you mean '../../assets/tg/111/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-120.md' contains an absolute link '/assets/tg/120/1.jpg', it was left as is. Did you mean '../../assets/tg/120/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-122.md' contains an absolute link '/assets/tg/122/1.jpg', it was left as is. Did you mean '../../assets/tg/122/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-129.md' contains an absolute link '/assets/tg/129/1.jpg', it was left as is. Did you mean '../../assets/tg/129/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-13.md' contains an absolute link '/assets/tg/13/1.jpg', it was left as is. Did you mean '../../assets/tg/13/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-13.md' contains an absolute link '/assets/tg/13/2.jpg', it was left as is. Did you mean '../../assets/tg/13/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-131.md' contains an absolute link '/assets/tg/131/1.jpg', it was left as is. Did you mean '../../assets/tg/131/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-132.md' contains an absolute link '/assets/tg/132/1.jpg', it was left as is. Did you mean '../../assets/tg/132/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-133.md' contains an absolute link '/assets/tg/133/1.jpg', it was left as is. Did you mean '../../assets/tg/133/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-134.md' contains an absolute link '/assets/tg/134/1.jpg', it was left as is. Did you mean '../../assets/tg/134/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-141.md' contains an absolute link '/assets/tg/141/1.jpg', it was left as is. Did you mean '../../assets/tg/141/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-141.md' contains an absolute link '/assets/tg/141/2.jpg', it was left as is. Did you mean '../../assets/tg/141/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-143.md' contains an absolute link '/assets/tg/143/1.jpg', it was left as is. Did you mean '../../assets/tg/143/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-154.md' contains an absolute link '/assets/tg/154/1.jpg', it was left as is. Did you mean '../../assets/tg/154/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-155.md' contains an absolute link '/assets/tg/155/1.jpg', it was left as is. Did you mean '../../assets/tg/155/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-156.md' contains an absolute link '/assets/tg/156/1.jpg', it was left as is. Did you mean '../../assets/tg/156/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-157.md' contains an absolute link '/assets/tg/157/1.jpg', it was left as is. Did you mean '../../assets/tg/157/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-157.md' contains an absolute link '/assets/tg/157/2.jpg', it was left as is. Did you mean '../../assets/tg/157/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-162.md' contains an absolute link '/assets/tg/162/1.jpg', it was left as is. Did you mean '../../assets/tg/162/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-162.md' contains an absolute link '/assets/tg/162/2.jpg', it was left as is. Did you mean '../../assets/tg/162/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-164.md' contains an absolute link '/assets/tg/164/1.jpg', it was left as is. Did you mean '../../assets/tg/164/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-165.md' contains an absolute link '/assets/tg/165/1.jpg', it was left as is. Did you mean '../../assets/tg/165/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-167.md' contains an absolute link '/assets/tg/167/1.jpg', it was left as is. Did you mean '../../assets/tg/167/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-168.md' contains an absolute link '/assets/tg/168/1.jpg', it was left as is. Did you mean '../../assets/tg/168/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-17.md' contains an absolute link '/assets/tg/17/1.jpg', it was left as is. Did you mean '../../assets/tg/17/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-18.md' contains an absolute link '/assets/tg/18/1.jpg', it was left as is. Did you mean '../../assets/tg/18/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-180.md' contains an absolute link '/assets/tg/180/1.jpg', it was left as is. Did you mean '../../assets/tg/180/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-180.md' contains an absolute link '/assets/tg/180/2.jpg', it was left as is. Did you mean '../../assets/tg/180/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-184.md' contains an absolute link '/assets/tg/184/1.jpg', it was left as is. Did you mean '../../assets/tg/184/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-186.md' contains an absolute link '/assets/tg/186/1.jpg', it was left as is. Did you mean '../../assets/tg/186/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-187.md' contains an absolute link '/assets/tg/187/1.jpg', it was left as is. Did you mean '../../assets/tg/187/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-187.md' contains an absolute link '/assets/tg/187/2.jpg', it was left as is. Did you mean '../../assets/tg/187/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-19.md' contains an absolute link '/assets/tg/19/1.jpg', it was left as is. Did you mean '../../assets/tg/19/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-190.md' contains an absolute link '/assets/tg/190/1.jpg', it was left as is. Did you mean '../../assets/tg/190/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-191.md' contains an absolute link '/assets/tg/191/1.jpg', it was left as is. Did you mean '../../assets/tg/191/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-202.md' contains an absolute link '/assets/tg/202/1.jpg', it was left as is. Did you mean '../../assets/tg/202/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-206.md' contains an absolute link '/assets/tg/206/1.jpg', it was left as is. Did you mean '../../assets/tg/206/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-208.md' contains an absolute link '/assets/tg/208/1.jpg', it was left as is. Did you mean '../../assets/tg/208/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-21.md' contains an absolute link '/assets/tg/21/1.jpg', it was left as is. Did you mean '../../assets/tg/21/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-210.md' contains an absolute link '/assets/tg/210/1.jpg', it was left as is. Did you mean '../../assets/tg/210/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-210.md' contains an absolute link '/assets/tg/210/2.jpg', it was left as is. Did you mean '../../assets/tg/210/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-210.md' contains an absolute link '/assets/tg/210/3.jpg', it was left as is. Did you mean '../../assets/tg/210/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-213.md' contains an absolute link '/assets/tg/213/1.jpg', it was left as is. Did you mean '../../assets/tg/213/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-215.md' contains an absolute link '/assets/tg/215/1.jpg', it was left as is. Did you mean '../../assets/tg/215/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-216.md' contains an absolute link '/assets/tg/216/1.jpg', it was left as is. Did you mean '../../assets/tg/216/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-216.md' contains an absolute link '/assets/tg/216/2.jpg', it was left as is. Did you mean '../../assets/tg/216/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-218.md' contains an absolute link '/assets/tg/218/1.jpg', it was left as is. Did you mean '../../assets/tg/218/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-219.md' contains an absolute link '/assets/tg/219/1.jpg', it was left as is. Did you mean '../../assets/tg/219/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-220.md' contains an absolute link '/assets/tg/220/1.jpg', it was left as is. Did you mean '../../assets/tg/220/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-221.md' contains an absolute link '/assets/tg/221/1.jpg', it was left as is. Did you mean '../../assets/tg/221/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/1.jpg', it was left as is. Did you mean '../../assets/tg/223/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/2.jpg', it was left as is. Did you mean '../../assets/tg/223/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/3.jpg', it was left as is. Did you mean '../../assets/tg/223/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/4.jpg', it was left as is. Did you mean '../../assets/tg/223/4.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/5.jpg', it was left as is. Did you mean '../../assets/tg/223/5.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/6.jpg', it was left as is. Did you mean '../../assets/tg/223/6.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/7.jpg', it was left as is. Did you mean '../../assets/tg/223/7.jpg'?
+INFO    -  Doc file 'blog/posts/tg-223.md' contains an absolute link '/assets/tg/223/8.jpg', it was left as is. Did you mean '../../assets/tg/223/8.jpg'?
+INFO    -  Doc file 'blog/posts/tg-232.md' contains an absolute link '/assets/tg/232/1.jpg', it was left as is. Did you mean '../../assets/tg/232/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-237.md' contains an absolute link '/assets/tg/237/1.jpg', it was left as is. Did you mean '../../assets/tg/237/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-240.md' contains an absolute link '/assets/tg/240/1.jpg', it was left as is. Did you mean '../../assets/tg/240/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-242.md' contains an absolute link '/assets/tg/242/1.jpg', it was left as is. Did you mean '../../assets/tg/242/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-242.md' contains an absolute link '/assets/tg/242/2.jpg', it was left as is. Did you mean '../../assets/tg/242/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-244.md' contains an absolute link '/assets/tg/244/1.jpg', it was left as is. Did you mean '../../assets/tg/244/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-244.md' contains an absolute link '/assets/tg/244/2.jpg', it was left as is. Did you mean '../../assets/tg/244/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-246.md' contains an absolute link '/assets/tg/246/1.jpg', it was left as is. Did you mean '../../assets/tg/246/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-246.md' contains an absolute link '/assets/tg/246/2.jpg', it was left as is. Did you mean '../../assets/tg/246/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-248.md' contains an absolute link '/assets/tg/248/1.jpg', it was left as is. Did you mean '../../assets/tg/248/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-249.md' contains an absolute link '/assets/tg/249/1.jpg', it was left as is. Did you mean '../../assets/tg/249/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-250.md' contains an absolute link '/assets/tg/250/1.jpg', it was left as is. Did you mean '../../assets/tg/250/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-251.md' contains an absolute link '/assets/tg/251/1.jpg', it was left as is. Did you mean '../../assets/tg/251/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-253.md' contains an absolute link '/assets/tg/253/1.jpg', it was left as is. Did you mean '../../assets/tg/253/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-254.md' contains an absolute link '/assets/tg/254/1.jpg', it was left as is. Did you mean '../../assets/tg/254/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-255.md' contains an absolute link '/assets/tg/255/1.jpg', it was left as is. Did you mean '../../assets/tg/255/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-256.md' contains an absolute link '/assets/tg/256/1.jpg', it was left as is. Did you mean '../../assets/tg/256/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-259.md' contains an absolute link '/assets/tg/259/1.jpg', it was left as is. Did you mean '../../assets/tg/259/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-260.md' contains an absolute link '/assets/tg/260/1.jpg', it was left as is. Did you mean '../../assets/tg/260/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-261.md' contains an absolute link '/assets/tg/261/1.jpg', it was left as is. Did you mean '../../assets/tg/261/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-261.md' contains an absolute link '/assets/tg/261/2.jpg', it was left as is. Did you mean '../../assets/tg/261/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-261.md' contains an absolute link '/assets/tg/261/3.jpg', it was left as is. Did you mean '../../assets/tg/261/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-261.md' contains an absolute link '/assets/tg/261/4.jpg', it was left as is. Did you mean '../../assets/tg/261/4.jpg'?
+INFO    -  Doc file 'blog/posts/tg-267.md' contains an absolute link '/assets/tg/267/1.jpg', it was left as is. Did you mean '../../assets/tg/267/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-269.md' contains an absolute link '/assets/tg/269/1.jpg', it was left as is. Did you mean '../../assets/tg/269/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-270.md' contains an absolute link '/assets/tg/270/1.jpg', it was left as is. Did you mean '../../assets/tg/270/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-271.md' contains an absolute link '/assets/tg/271/1.jpg', it was left as is. Did you mean '../../assets/tg/271/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-276.md' contains an absolute link '/assets/tg/276/1.jpg', it was left as is. Did you mean '../../assets/tg/276/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-277.md' contains an absolute link '/assets/tg/277/1.jpg', it was left as is. Did you mean '../../assets/tg/277/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-278.md' contains an absolute link '/assets/tg/278/1.jpg', it was left as is. Did you mean '../../assets/tg/278/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-281.md' contains an absolute link '/assets/tg/281/1.jpg', it was left as is. Did you mean '../../assets/tg/281/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-282.md' contains an absolute link '/assets/tg/282/1.jpg', it was left as is. Did you mean '../../assets/tg/282/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-292.md' contains an absolute link '/assets/tg/292/1.jpg', it was left as is. Did you mean '../../assets/tg/292/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-294.md' contains an absolute link '/assets/tg/294/1.jpg', it was left as is. Did you mean '../../assets/tg/294/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-294.md' contains an absolute link '/assets/tg/294/2.jpg', it was left as is. Did you mean '../../assets/tg/294/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-296.md' contains an absolute link '/assets/tg/296/1.jpg', it was left as is. Did you mean '../../assets/tg/296/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-296.md' contains an absolute link '/assets/tg/296/2.jpg', it was left as is. Did you mean '../../assets/tg/296/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-296.md' contains an absolute link '/assets/tg/296/3.jpg', it was left as is. Did you mean '../../assets/tg/296/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-299.md' contains an absolute link '/assets/tg/299/1.jpg', it was left as is. Did you mean '../../assets/tg/299/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-3.md' contains an absolute link '/assets/tg/3/1.jpg', it was left as is. Did you mean '../../assets/tg/3/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-307.md' contains an absolute link '/assets/tg/307/1.jpg', it was left as is. Did you mean '../../assets/tg/307/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-312.md' contains an absolute link '/assets/tg/312/1.jpg', it was left as is. Did you mean '../../assets/tg/312/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-314.md' contains an absolute link '/assets/tg/314/1.jpg', it was left as is. Did you mean '../../assets/tg/314/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-318.md' contains an absolute link '/assets/tg/318/1.jpg', it was left as is. Did you mean '../../assets/tg/318/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-318.md' contains an absolute link '/assets/tg/318/2.jpg', it was left as is. Did you mean '../../assets/tg/318/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-318.md' contains an absolute link '/assets/tg/318/3.jpg', it was left as is. Did you mean '../../assets/tg/318/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-32.md' contains an absolute link '/assets/tg/32/1.jpg', it was left as is. Did you mean '../../assets/tg/32/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-32.md' contains an absolute link '/assets/tg/32/2.jpg', it was left as is. Did you mean '../../assets/tg/32/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-32.md' contains an absolute link '/assets/tg/32/3.jpg', it was left as is. Did you mean '../../assets/tg/32/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-32.md' contains an absolute link '/assets/tg/32/4.jpg', it was left as is. Did you mean '../../assets/tg/32/4.jpg'?
+INFO    -  Doc file 'blog/posts/tg-321.md' contains an absolute link '/assets/tg/321/1.jpg', it was left as is. Did you mean '../../assets/tg/321/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-325.md' contains an absolute link '/assets/tg/325/1.jpg', it was left as is. Did you mean '../../assets/tg/325/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-326.md' contains an absolute link '/assets/tg/326/1.jpg', it was left as is. Did you mean '../../assets/tg/326/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-326.md' contains an absolute link '/assets/tg/326/2.jpg', it was left as is. Did you mean '../../assets/tg/326/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-326.md' contains an absolute link '/assets/tg/326/3.jpg', it was left as is. Did you mean '../../assets/tg/326/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-326.md' contains an absolute link '/assets/tg/326/4.jpg', it was left as is. Did you mean '../../assets/tg/326/4.jpg'?
+INFO    -  Doc file 'blog/posts/tg-331.md' contains an absolute link '/assets/tg/331/1.jpg', it was left as is. Did you mean '../../assets/tg/331/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-332.md' contains an absolute link '/assets/tg/332/1.jpg', it was left as is. Did you mean '../../assets/tg/332/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-333.md' contains an absolute link '/assets/tg/333/1.jpg', it was left as is. Did you mean '../../assets/tg/333/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-4.md' contains an absolute link '/assets/tg/4/1.jpg', it was left as is. Did you mean '../../assets/tg/4/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-45.md' contains an absolute link '/assets/tg/45/1.jpg', it was left as is. Did you mean '../../assets/tg/45/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-46.md' contains an absolute link '/assets/tg/46/1.jpg', it was left as is. Did you mean '../../assets/tg/46/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-47.md' contains an absolute link '/assets/tg/47/1.jpg', it was left as is. Did you mean '../../assets/tg/47/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-48.md' contains an absolute link '/assets/tg/48/1.jpg', it was left as is. Did you mean '../../assets/tg/48/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-49.md' contains an absolute link '/assets/tg/49/1.jpg', it was left as is. Did you mean '../../assets/tg/49/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-5.md' contains an absolute link '/assets/tg/5/1.jpg', it was left as is. Did you mean '../../assets/tg/5/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-51.md' contains an absolute link '/assets/tg/51/1.jpg', it was left as is. Did you mean '../../assets/tg/51/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-52.md' contains an absolute link '/assets/tg/52/1.jpg', it was left as is. Did you mean '../../assets/tg/52/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-55.md' contains an absolute link '/assets/tg/55/1.jpg', it was left as is. Did you mean '../../assets/tg/55/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-56.md' contains an absolute link '/assets/tg/56/1.jpg', it was left as is. Did you mean '../../assets/tg/56/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-58.md' contains an absolute link '/assets/tg/58/1.jpg', it was left as is. Did you mean '../../assets/tg/58/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-59.md' contains an absolute link '/assets/tg/59/1.jpg', it was left as is. Did you mean '../../assets/tg/59/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-60.md' contains an absolute link '/assets/tg/60/1.jpg', it was left as is. Did you mean '../../assets/tg/60/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-62.md' contains an absolute link '/assets/tg/62/1.jpg', it was left as is. Did you mean '../../assets/tg/62/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-63.md' contains an absolute link '/assets/tg/63/1.jpg', it was left as is. Did you mean '../../assets/tg/63/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-63.md' contains an absolute link '/assets/tg/63/2.jpg', it was left as is. Did you mean '../../assets/tg/63/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-65.md' contains an absolute link '/assets/tg/65/1.jpg', it was left as is. Did you mean '../../assets/tg/65/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-67.md' contains an absolute link '/assets/tg/67/1.jpg', it was left as is. Did you mean '../../assets/tg/67/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-67.md' contains an absolute link '/assets/tg/67/2.jpg', it was left as is. Did you mean '../../assets/tg/67/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-69.md' contains an absolute link '/assets/tg/69/1.jpg', it was left as is. Did you mean '../../assets/tg/69/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-7.md' contains an absolute link '/assets/tg/7/1.jpg', it was left as is. Did you mean '../../assets/tg/7/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-70.md' contains an absolute link '/assets/tg/70/1.jpg', it was left as is. Did you mean '../../assets/tg/70/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-71.md' contains an absolute link '/assets/tg/71/1.jpg', it was left as is. Did you mean '../../assets/tg/71/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-72.md' contains an absolute link '/assets/tg/72/1.jpg', it was left as is. Did you mean '../../assets/tg/72/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-73.md' contains an absolute link '/assets/tg/73/1.jpg', it was left as is. Did you mean '../../assets/tg/73/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-73.md' contains an absolute link '/assets/tg/73/2.jpg', it was left as is. Did you mean '../../assets/tg/73/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-75.md' contains an absolute link '/assets/tg/75/1.jpg', it was left as is. Did you mean '../../assets/tg/75/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-75.md' contains an absolute link '/assets/tg/75/2.jpg', it was left as is. Did you mean '../../assets/tg/75/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-77.md' contains an absolute link '/assets/tg/77/1.jpg', it was left as is. Did you mean '../../assets/tg/77/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-77.md' contains an absolute link '/assets/tg/77/2.jpg', it was left as is. Did you mean '../../assets/tg/77/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-8.md' contains an absolute link '/assets/tg/8/1.jpg', it was left as is. Did you mean '../../assets/tg/8/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-8.md' contains an absolute link '/assets/tg/8/2.jpg', it was left as is. Did you mean '../../assets/tg/8/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-80.md' contains an absolute link '/assets/tg/80/1.jpg', it was left as is. Did you mean '../../assets/tg/80/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-81.md' contains an absolute link '/assets/tg/81/1.jpg', it was left as is. Did you mean '../../assets/tg/81/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-82.md' contains an absolute link '/assets/tg/82/1.jpg', it was left as is. Did you mean '../../assets/tg/82/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-82.md' contains an absolute link '/assets/tg/82/2.jpg', it was left as is. Did you mean '../../assets/tg/82/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-85.md' contains an absolute link '/assets/tg/85/1.jpg', it was left as is. Did you mean '../../assets/tg/85/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-86.md' contains an absolute link '/assets/tg/86/1.jpg', it was left as is. Did you mean '../../assets/tg/86/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-86.md' contains an absolute link '/assets/tg/86/2.jpg', it was left as is. Did you mean '../../assets/tg/86/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-88.md' contains an absolute link '/assets/tg/88/1.jpg', it was left as is. Did you mean '../../assets/tg/88/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-89.md' contains an absolute link '/assets/tg/89/1.jpg', it was left as is. Did you mean '../../assets/tg/89/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-90.md' contains an absolute link '/assets/tg/90/1.jpg', it was left as is. Did you mean '../../assets/tg/90/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-91.md' contains an absolute link '/assets/tg/91/1.jpg', it was left as is. Did you mean '../../assets/tg/91/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-93.md' contains an absolute link '/assets/tg/93/1.jpg', it was left as is. Did you mean '../../assets/tg/93/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-95.md' contains an absolute link '/assets/tg/95/1.jpg', it was left as is. Did you mean '../../assets/tg/95/1.jpg'?
+INFO    -  Doc file 'blog/posts/tg-95.md' contains an absolute link '/assets/tg/95/2.jpg', it was left as is. Did you mean '../../assets/tg/95/2.jpg'?
+INFO    -  Doc file 'blog/posts/tg-95.md' contains an absolute link '/assets/tg/95/3.jpg', it was left as is. Did you mean '../../assets/tg/95/3.jpg'?
+INFO    -  Doc file 'blog/posts/tg-95.md' contains an absolute link '/assets/tg/95/4.jpg', it was left as is. Did you mean '../../assets/tg/95/4.jpg'?
+Building prefix dict from the default dictionary ...
+Loading model from cache C:\Users\ZL\AppData\Local\Temp\jieba.cache
+Loading model cost 0.418 seconds.
+Prefix dict has been built successfully.
+INFO    -  Documentation built in 3.30 seconds
+待部署文件：555
+X99 镜像更新完成（555 个文件）
