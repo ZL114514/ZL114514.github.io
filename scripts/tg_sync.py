@@ -196,6 +196,21 @@ def text_of(n):
     return re.sub(r"\n{3,}", "\n\n", to_md(n)).strip()
 
 
+def plain_of(n):
+    """纯文本（不套 markdown 标记）——emoji 这种值必须用这个，否则会变成 **👍**。"""
+    out = []
+
+    def walk(x):
+        if isinstance(x, str):
+            out.append(x)
+        else:
+            for k in x.kids:
+                walk(k)
+
+    walk(n)
+    return "".join(out).strip()
+
+
 def style_url(style):
     m = re.search(r"url\('([^']+)'\)", style or "")
     return m.group(1) if m else ""
@@ -246,7 +261,7 @@ def parse_page(page):
         if rx is not None:
             for sp in rx.findall(by_class("tgme_reaction")):
                 b = sp.find(lambda n: n.tag == "b")
-                emoji = text_of(b).strip() if b is not None else ""
+                emoji = plain_of(b) if b is not None else ""
                 cnt = re.sub(r"\D", "", "".join(x for x in sp.kids if isinstance(x, str))) or "1"
                 if emoji:
                     rec["reactions"].append({"emoji": emoji, "count": int(cnt)})
@@ -369,11 +384,25 @@ def read_front_matter(path):
     return fm, m.group(2)
 
 
+def title_of(post):
+    """标题：优先正文首行，其次"日期 · N 张图"，避免 Material 用文件名生成 "Tg 326"。"""
+    t = re.sub(r"[#*`\[\]()>]", "", (post["text"] or "").split("\n")[0]).strip()
+    if t:
+        return t[:40]
+    n = len(post["photos"])
+    if n:
+        return "%s · %d 张图" % (post["dt"][:10], n)
+    if post["docs"]:
+        return "%s · %s" % (post["dt"][:10], post["docs"][0]["name"])
+    return "Telegram %s" % post["dt"][:10]
+
+
 def render(post, media, videos, manual_cats):
     dt = datetime.fromisoformat(post["dt"]).astimezone(CST)
     cats = manual_cats or [classify(post)]
     lines = ["---",
              "date: %s" % dt.isoformat(sep=" ", timespec="seconds"),
+             'title: "%s"' % title_of(post).replace('"', "'"),
              "categories:",
              *["  - %s" % c for c in cats],
              "authors:",
@@ -435,8 +464,6 @@ def main():
 
     os.makedirs(POSTS_DIR, exist_ok=True)
     stats = {"new": 0, "updated": 0, "skipped": 0, "media": 0, "video_bytes": 0, "img_bytes": 0}
-    review = []
-    seed = {}
     for p in posts:
         slug = "tg-%d" % p["id"]
         md_path = os.path.join(POSTS_DIR, slug + ".md")
@@ -444,8 +471,6 @@ def main():
         h = sha(p)
         if old_fm.get("tg_hash") == h and os.path.exists(md_path):
             stats["skipped"] += 1
-            if p["reactions"]:
-                seed[str(p["id"])] = {r["emoji"]: r["count"] for r in p["reactions"]}
             continue
         manual = []
         if old_fm.get("categories"):
@@ -486,11 +511,36 @@ def main():
         with open(md_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(render(p, media, videos, old_cats))
         stats["updated" if new else "new"] += 1
-        if p["reactions"]:
-            seed[str(p["id"])] = {r["emoji"]: r["count"] for r in p["reactions"]}
+
+    # 播种表 / 待确认清单都按"全部帖子 + 已有文件"合并生成：
+    # 增量运行只抓到最近一页，不能因此把这两份文件截断
+    def _read_json(path, default):
+        try:
+            with open(path, encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return default
+
+    seed = {str(p["id"]): {r["emoji"]: r["count"] for r in p["reactions"]}
+            for p in posts if p["reactions"]}
+    for pid, ems in _read_json(os.path.join(REPO, "scripts", "tg-reactions-seed.json"), {}).items():
+        seed.setdefault(pid, {})
+        for em, n in ems.items():
+            seed[pid].setdefault(em, n)
+
+    rev_rows = {}
+    try:
+        with open(REVIEW, encoding="utf-8") as f:
+            for line in f:
+                m = re.match(r"\|\s*\[(\d+)\]\(https://t\.me/[^)]*\)\s*\|([^|]*)\|([^|]*)\|([^|]*)\|", line)
+                if m:
+                    rev_rows[m.group(1)] = (m.group(2).strip(), m.group(3).strip(), m.group(4).strip())
+    except Exception:
+        pass
+    for p in posts:
         if classify(p) == "生活随想" and (not p["text"].strip() or len(p["text"]) <= 20):
-            review.append((p["id"], p["dt"][:10], (p["text"] or "").replace("\n", " ")[:34],
-                           len(p["photos"])))
+            rev_rows[str(p["id"])] = (p["dt"][:10], (p["text"] or "").replace("\n", " ")[:34],
+                                      str(len(p["photos"])))
 
     seen = {}
     for p in posts:
@@ -507,14 +557,15 @@ def main():
                 "2. 直接编辑对应 md 的 `categories:`（重跑同步会保留你的改动）。\n\n"
                 "点标题可在 Telegram 里看原图确认。\n\n"
                 "| id | 日期 | 配文 | 图数 | 现分类 |\n|---|---|---|---|---|\n")
-        for i, d, t, n in review:
-            f.write("| [%d](https://t.me/%s/%d) | %s | %s | %d | 生活随想 |\n"
-                    % (i, CH, i, d, t.replace("|", "\\|"), n))
+        for pid in sorted(rev_rows, key=lambda x: int(x)):
+            d, t, n = rev_rows[pid]
+            f.write("| [%s](https://t.me/%s/%s) | %s | %s | %s | 生活随想 |\n"
+                    % (pid, CH, pid, d, t.replace("|", "\\|"), n))
     print("新增 %d / 更新 %d / 跳过 %d | 媒体 %d 张 %.1f MB | 视频 %.1f MB"
           % (stats["new"], stats["updated"], stats["skipped"], stats["media"],
              stats["img_bytes"] / 1e6, stats["video_bytes"] / 1e6))
     print("reaction 播种 %d 条帖子 -> scripts/tg-reactions-seed.json" % len(seed))
-    print("待确认分类 %d 条 -> scripts/tg-review.md" % len(review))
+    print("待确认分类 %d 条 -> scripts/tg-review.md" % len(rev_rows))
 
 
 if __name__ == "__main__":

@@ -19,19 +19,31 @@ def ssh(cmd, stdin=None):
                           input=stdin, capture_output=True, text=True)
 
 
+def norm_emoji(e):
+    """老版本的抓取把 emoji 写成 **👍**（markdown 加粗），这里统一洗干净。"""
+    return str(e).replace("*", "").strip()
+
+
 def main():
     if not os.path.exists(SEED):
         print("没有 seed 文件，跳过")
         return
-    seed = json.load(open(SEED, encoding="utf-8"))
+    seed = {pid: {norm_emoji(e): int(n) for e, n in ems.items()}
+            for pid, ems in json.load(open(SEED, encoding="utf-8")).items()}
     r = ssh("sudo -n cat %s" % REMOTE)
     if r.returncode != 0:
         print("读取服务器计数失败：%s" % r.stderr.strip())
         sys.exit(1)
     try:
-        cur = json.loads(r.stdout or "{}")
+        raw = json.loads(r.stdout or "{}")
     except Exception:
-        cur = {}
+        raw = {}
+    cur = {}
+    for pid, ems in raw.items():                     # 顺手洗掉服务器上已有的脏键
+        for em, n in ems.items():
+            e = norm_emoji(em)
+            if e:
+                cur.setdefault(pid, {})[e] = max(cur.get(pid, {}).get(e, 0), int(n))
     added = 0
     for pid, ems in seed.items():
         for em, n in ems.items():

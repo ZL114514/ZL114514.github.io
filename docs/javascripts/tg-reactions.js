@@ -18,9 +18,14 @@
   function render(el, totals, voted) {
     var id = el.getAttribute("data-post");
     var mine = voted[id] || {};
+    var have = totals[id] || {};
+    var set = EMOJI.slice();
+    Object.keys(have).forEach(function (e) {          // TG 里出现过的其它 emoji 也一并展示
+      if (set.indexOf(e) < 0) { set.push(e); }
+    });
     el.textContent = "";
-    EMOJI.forEach(function (em) {
-      var n = (totals[id] && totals[id][em]) || 0;
+    set.forEach(function (em) {
+      var n = have[em] || 0;
       var b = document.createElement("button");
       b.type = "button";
       b.className = "tg-rx-btn" + (mine[em] ? " on" : "");
