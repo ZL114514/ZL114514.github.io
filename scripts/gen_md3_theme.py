@@ -256,7 +256,7 @@ COMPONENTS = """
               transform .2s var(--md3-ease-spring);
 }
 .md-typeset .md-button--primary {
-  background-color: var(--md-ref-primary-85);
+  background-color: var(--md-ref-primary-90);
   border-color: transparent;
   color: var(--md-ref-primary-20);
 }
