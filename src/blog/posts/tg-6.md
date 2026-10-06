@@ -11,7 +11,7 @@ tags:
 tg_id: 6
 tg_link: "https://t.me/zlzlzl_ch/6"
 tg_views: "42"
-tg_hash: 90c8a5bc2e91
+tg_hash: 00f7b8c5e9ae
 ---
 <video controls preload="metadata" src="/assets/tg/6/video-1.mp4"></video>
 

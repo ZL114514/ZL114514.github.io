@@ -321,8 +321,11 @@ def scrape(full, known_ids):
     return [seen[k] for k in sorted(seen)]
 
 
+RENDER_V = "r4"   # 渲染器版本：只改 render()/front matter 时把它 +1，否则帖子 hash 不变、老帖不会被重写
+
+
 def sha(post):
-    raw = json.dumps([post["id"], post["dt"], post["text"], post["photos"],
+    raw = json.dumps([RENDER_V, post["id"], post["dt"], post["text"], post["photos"],
                       post["videos"], post["docs"]], ensure_ascii=False, sort_keys=True)
     return hashlib.sha1(raw.encode()).hexdigest()[:12]
 
