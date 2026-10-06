@@ -169,21 +169,22 @@ def to_md(node):
     if isinstance(node, str):
         return node
     if node.tag == "br":
-        return "\n"
+        return "<br>"            # 裸 \n 会被 markdown 折成一行，用内联 <br> 保换行
     if node.tag == "img":
         return ""
     inner = "".join(to_md(k) for k in node.kids)
     t = node.tag
     if t in ("b", "strong"):
-        return "**%s**" % inner if inner.strip() else inner
+        # 用内联 HTML：TG 里常见"文字**😁**"这种紧贴写法，markdown 的 ** 不认，会露出星号
+        return "<strong>%s</strong>" % inner if inner.strip() else inner
     if t in ("i", "em", "tg-emoji"):
         return inner
     if t in ("s", "strike", "del"):
-        return "~~%s~~" % inner
+        return "<del>%s</del>" % inner if inner.strip() else inner
     if t == "code":
         return "`%s`" % inner
     if t == "pre":
-        return "\n```\n%s\n```\n" % inner.strip("\n")
+        return "\n```\n%s\n```\n" % inner.replace("<br>", "\n").strip("\n")
     if t == "a":
         href = node.attrs.get("href", "")
         return "[%s](%s)" % (inner, href) if inner.strip() else href
@@ -391,7 +392,8 @@ def read_front_matter(path):
 
 def title_of(post):
     """标题：优先正文首行，其次"日期 · N 张图"，避免 Material 用文件名生成 "Tg 326"。"""
-    t = re.sub(r"[#*`\[\]()>]", "", (post["text"] or "").split("\n")[0]).strip()
+    t = re.sub(r"<[^>]*>", "", post["text"] or "")
+    t = re.sub(r"[#*`\[\]()>]", "", t.split("\n")[0]).strip()
     if t:
         return t[:40]
     n = len(post["photos"])
