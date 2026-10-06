@@ -22,9 +22,11 @@ STAMP="scripts/.last_deploy"
   echo "待部署文件：$N"
   if [ "$N" != "0" ]; then
     ok=0
+    STAMPABS="$(pwd)/$STAMP"
     for attempt in 1 2 3; do
       if [ -f "$STAMP" ]; then
-        find docs -type f -newer "$STAMP" -print0 | tar czf - --null -T - \
+        # 必须在 docs/ 里做 tar，否则归档里带 docs/ 前缀，会落到镜像的 <根>/docs/ 下
+        (cd docs && find . -type f -newer "$STAMPABS" -print0 | tar czf - --null -T -) \
           | ssh -o BatchMode=yes -o ConnectTimeout=20 x99 'tar xzf - -C /srv/zlblog/blog'
       else
         tar czf - -C docs . | ssh -o BatchMode=yes -o ConnectTimeout=20 x99 'tar xzf - -C /srv/zlblog/blog'
@@ -44,7 +46,15 @@ STAMP="scripts/.last_deploy"
   if [ -n "$(git status --porcelain)" ]; then
     git add -A
     git commit -q -m "sync: telegram $(date '+%F %H:%M')"
-    git push -q && echo "已推送到 GitHub" || echo "!! git push 失败"
+    for attempt in 1 2 3 4 5; do          # GitHub SSH 时不时被掐断，重试到远端确认一致
+      git push -q 2>/dev/null || true
+      if [ "$(git ls-remote origin -h refs/heads/main | cut -c1-40)" = "$(git rev-parse HEAD)" ]; then
+        echo "已推送到 GitHub"
+        break
+      fi
+      echo "  push 第 $attempt 次失败，6 秒后重试"
+      sleep 6
+    done
   else
     echo "内容无变化，跳过提交"
   fi
