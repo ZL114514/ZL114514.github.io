@@ -1,5 +1,6 @@
 ---
 date: 2025-01-06 14:34:00+08:00
+title: "赛博徭役…"
 categories:
   - 生活随想
 authors:
