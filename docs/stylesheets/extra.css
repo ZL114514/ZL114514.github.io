@@ -18,3 +18,9 @@
 .md-typeset .grid.cards > ul > li {
   border-radius: 0.4rem;
 }
+
+/* 阅读时长只在文章页显示：列表 / 归档 / 分类页的条目里隐藏
+   （列表条目的 meta 用 .md-meta__list，文章页用 .md-nav__list，故只在 --excerpt 内隐藏） */
+.md-post--excerpt .md-post__meta .md-meta__list > li:last-child {
+  display: none;
+}

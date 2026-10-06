@@ -38,6 +38,38 @@
 
 .tg-rx-e { font-size: .85rem; }
 
+.tg-rx-img {
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -.22em;
+}
+
 .tg-rx-n { font-variant-numeric: tabular-nums; opacity: .85; }
 
 .tg-rx-tip { font-size: .68rem; color: var(--md-default-fg-color--light); }
+
+/* ＋ 添加表情：按钮 + 弹出的表情面板 */
+.tg-rx-add { position: relative; display: inline-flex; }
+
+.tg-rx-plus { padding: .22rem .5rem; font-size: .82rem; }
+
+.tg-rx-panel {
+  position: absolute;
+  bottom: 135%;
+  left: 0;
+  z-index: 6;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem;
+  width: max-content;
+  max-width: 15rem;
+  padding: .35rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .5rem;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .18);
+}
+
+.tg-rx-panel[hidden] { display: none; }
+
+.tg-rx-panel .tg-rx-btn { padding: .18rem .3rem; }

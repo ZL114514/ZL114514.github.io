@@ -211,6 +211,11 @@ def plain_of(n):
     return "".join(out).strip()
 
 
+def norm_emoji(e):
+    """归一 emoji：去掉 markdown 加粗残留（**👍**）与变体选择符（❤️→❤），避免同一表情存成两个键。"""
+    return (e or "").replace("*", "").replace("\ufe0f", "").strip()
+
+
 def style_url(style):
     m = re.search(r"url\('([^']+)'\)", style or "")
     return m.group(1) if m else ""
@@ -261,7 +266,7 @@ def parse_page(page):
         if rx is not None:
             for sp in rx.findall(by_class("tgme_reaction")):
                 b = sp.find(lambda n: n.tag == "b")
-                emoji = plain_of(b) if b is not None else ""
+                emoji = norm_emoji(plain_of(b)) if b is not None else ""
                 cnt = re.sub(r"\D", "", "".join(x for x in sp.kids if isinstance(x, str))) or "1"
                 if emoji:
                     rec["reactions"].append({"emoji": emoji, "count": int(cnt)})
@@ -531,12 +536,14 @@ def main():
         except Exception:
             return default
 
-    seed = {str(p["id"]): {r["emoji"]: r["count"] for r in p["reactions"]}
+    seed = {str(p["id"]): {norm_emoji(r["emoji"]): r["count"] for r in p["reactions"]}
             for p in posts if p["reactions"]}
     for pid, ems in _read_json(os.path.join(REPO, "scripts", "tg-reactions-seed.json"), {}).items():
         seed.setdefault(pid, {})
-        for em, n in ems.items():
-            seed[pid].setdefault(em, n)
+        for em, n in ems.items():                     # 顺手洗净历史遗留的 **👍** 脏键
+            e = norm_emoji(em)
+            if e:
+                seed[pid].setdefault(e, n)
 
     rev_rows = {}
     try:

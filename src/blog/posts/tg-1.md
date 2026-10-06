@@ -9,12 +9,14 @@ authors:
 tags:
   - Telegram
 tg_id: 1
+tg_ids: [1, 2]
 tg_link: "https://t.me/zlzlzl_ch/1"
 tg_views: "-"
-tg_hash: 26af7ce69d27
+tg_hash: 0cb840d84dd1
 ---
 Channel created
+Channel photo updated
 
 <div class="tg-rx" data-post="1"></div>
 
-— [Telegram 原帖](https://t.me/zlzlzl_ch/1) · - 次浏览
+— 合并自 Telegram [1](https://t.me/zlzlzl_ch/1) · [2](https://t.me/zlzlzl_ch/2) · 共 - 次浏览
