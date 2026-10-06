@@ -34,28 +34,24 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 EMOJI_SET = ["👍", "❤", "😁", "🔥", "🥰", "😢"]
 MAX_IMG_W = 1600
 MAX_VIDEO_MB = 20
-GROUP_WINDOW = 60   # 秒：同一时段内"每条都带媒体"的连续帖合并成一条（网页客户端的聚合观感）
+GROUP_WINDOW = 60   # 秒：与上一条间隔在此窗口内的连续帖合并成一篇（文字+媒体都并入）
 
 
 def _dt(post):
     return datetime.fromisoformat(post["dt"])
 
 
-def _has_media(p):
-    return bool(p["photos"] or p["videos"] or p["docs"])
-
-
 def merge_groups(posts, window):
-    """Merge bursts of consecutive media messages into one pseudo post.
+    """Merge bursts of consecutive messages into one pseudo post.
 
-    Only merges when every message in the burst carries media: multi-part text
-    threads (碎碎念) must stay separate. The merged post keeps the smallest
-    message id as its key and remembers every original id.
+    Anything posted within `window` seconds of the previous message becomes one
+    article — text *and* media, in the original order (that is how a same-moment
+    burst reads on the web client). The merged post keeps the smallest message id
+    as its key and remembers every original id.
     """
     groups, cur = [], []
     for p in posts:
-        if cur and 0 <= (_dt(p) - _dt(cur[-1])).total_seconds() <= window \
-                and all(_has_media(x) for x in cur) and _has_media(p):
+        if cur and 0 <= (_dt(p) - _dt(cur[-1])).total_seconds() <= window:
             cur.append(p)
             continue
         if cur:
@@ -81,6 +77,10 @@ def merge_groups(posts, window):
             "photos": [u for x in g for u in x["photos"]],
             "videos": [v for x in g for v in x["videos"]],
             "docs": [d for x in g for d in x["docs"]],
+            # 逐条保留顺序，render 按 parts 交叉排（每条的文字紧跟它自己的媒体）
+            "parts": [{"text": x["text"].strip(), "n_photos": len(x["photos"]),
+                       "videos": x["videos"], "docs": x["docs"], "link": x["link"]}
+                      for x in g],
             "reactions": [{"emoji": k, "count": v} for k, v in rx.items()],
             "views": views, "link": head["link"], "merged": len(g),
         })
@@ -418,18 +418,27 @@ def render(post, media, videos, manual_cats):
              "tg_hash: %s" % sha(post),
              "---", ""]
     body = []
-    for i, rel in enumerate(media, 1):
-        body.append("![图片 %d](%s)" % (i, rel))
-    if videos:
-        for v in videos:
+    it = iter(media)
+    parts = post.get("parts") or [{"text": post["text"], "n_photos": len(media),
+                                   "videos": videos, "docs": post["docs"], "link": post["link"]}]
+    n = 0
+    for part in parts:                       # 同段合并时按原顺序交叉排：每条文字紧跟其媒体
+        for _ in range(part["n_photos"]):
+            rel = next(it, None)
+            if rel:
+                n += 1
+                body.append("![图片 %d](%s)" % (n, rel))
+        for v in part["videos"]:
             if v.get("file"):
                 body.append('<video controls preload="metadata" src="%s"></video>' % v["file"])
             else:
-                body.append("> 视频（%s）未本地化，[在 Telegram 查看](%s)" % (v.get("dur") or "?", post["link"]))
-    for d in post["docs"]:
-        body.append("📎 **%s**（%s）— [在 Telegram 获取](%s)" % (d["name"], d["size"], post["link"]))
-    if post["text"].strip():
-        body.append(post["text"].strip())
+                body.append("> 视频（%s）未本地化，[在 Telegram 查看](%s)"
+                            % (v.get("dur") or "?", part.get("link") or post["link"]))
+        for d in part["docs"]:
+            body.append("📎 **%s**（%s）— [在 Telegram 获取](%s)"
+                        % (d["name"], d["size"], part.get("link") or post["link"]))
+        if part["text"]:
+            body.append(part["text"])
     body.append("")
     body.append('<div class="tg-rx" data-post="%d"></div>' % post["id"])
     body.append("")
@@ -547,6 +556,9 @@ def main():
     for p in posts:
         for pid in p.get("ids", [p["id"]]):
             seen[str(pid)] = sha(p)
+    # 增量运行只抓到最近一页：状态必须与旧文件合并，否则下次得从最新一路翻回 id 1
+    for k, v in (state.get("seen") or {}).items():
+        seen.setdefault(k, v)
     with open(STATE, "w", encoding="utf-8") as f:
         json.dump({"version": 1, "seen": seen}, f, indent=0)
     with open(os.path.join(REPO, "scripts", "tg-reactions-seed.json"), "w", encoding="utf-8") as f:

@@ -9,7 +9,9 @@ STAMP="scripts/.last_deploy"
 
 {
   echo "=== $(date '+%F %T') 同步开始 ==="
-  "$PY" scripts/tg_sync.py || { echo "!! 抓取失败，中止"; exit 1; }
+  # 全量扫描：16 页 ~15 秒，媒体已存在不会重下；增量模式只能看到最近一页，
+  # 老帖被编辑/新补媒体就永远发现不了
+  "$PY" scripts/tg_sync.py --full || { echo "!! 抓取失败，中止"; exit 1; }
   "$PY" scripts/tg_seed_reactions.py
   "$PY" -m mkdocs build --clean || { echo "!! 构建失败，中止"; exit 1; }
 
