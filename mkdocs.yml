@@ -50,6 +50,7 @@ theme:
 nav:
   - 首页: index.md
   - 博客: blog/index.md
+  - 成绩库: record/index.md
   - 关于: about/index.md
 
 plugins:
