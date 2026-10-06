@@ -403,6 +403,7 @@ def render(post, media, videos, manual_cats):
     lines = ["---",
              "date: %s" % dt.isoformat(sep=" ", timespec="seconds"),
              'title: "%s"' % title_of(post).replace('"', "'"),
+             "slug: tg-%d" % post["id"],
              "categories:",
              *["  - %s" % c for c in cats],
              "authors:",

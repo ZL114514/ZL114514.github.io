@@ -1,6 +1,7 @@
 ---
 date: 2025-01-04 22:48:17+08:00
 title: "Channel photo updated"
+slug: tg-2
 categories:
   - 生活随想
 authors:

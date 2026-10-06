@@ -1,6 +1,7 @@
 ---
 date: 2025-01-07 01:35:58+08:00
 title: "晚安"
+slug: tg-8
 categories:
   - 生活随想
 authors:

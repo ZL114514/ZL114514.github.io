@@ -1,6 +1,7 @@
 ---
 date: 2025-01-06 19:58:55+08:00
 title: "2025-01-06 · 1 张图"
+slug: tg-7
 categories:
   - 生活随想
 authors:
