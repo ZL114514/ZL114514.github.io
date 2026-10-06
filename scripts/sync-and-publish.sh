@@ -21,15 +21,24 @@ STAMP="scripts/.last_deploy"
   fi
   echo "待部署文件：$N"
   if [ "$N" != "0" ]; then
-    if [ -f "$STAMP" ]; then
-      find docs -type f -newer "$STAMP" -print0 | tar czf - --null -T - \
-        | ssh -o BatchMode=yes -o ConnectTimeout=20 x99 'tar xzf - -C /srv/zlblog/blog' \
-        && echo "X99 镜像增量更新完成" || echo "!! X99 增量部署失败"
+    ok=0
+    for attempt in 1 2 3; do
+      if [ -f "$STAMP" ]; then
+        find docs -type f -newer "$STAMP" -print0 | tar czf - --null -T - \
+          | ssh -o BatchMode=yes -o ConnectTimeout=20 x99 'tar xzf - -C /srv/zlblog/blog'
+      else
+        tar czf - -C docs . | ssh -o BatchMode=yes -o ConnectTimeout=20 x99 'tar xzf - -C /srv/zlblog/blog'
+      fi
+      if [ $? -eq 0 ]; then ok=1; break; fi
+      echo "  部署第 $attempt 次失败（SSH 断连？），3 秒后重试"
+      sleep 3
+    done
+    if [ "$ok" = "1" ]; then
+      echo "X99 镜像更新完成（$N 个文件）"
+      touch "$STAMP"          # 只有成功才推进基准，否则下次会漏掉这批文件
     else
-      tar czf - -C docs . | ssh -o BatchMode=yes -o ConnectTimeout=20 x99 'tar xzf - -C /srv/zlblog/blog' \
-        && echo "X99 镜像全量更新完成" || echo "!! X99 全量部署失败"
+      echo "!! X99 增量部署失败（已重试 3 次；基准未推进，下次会重来）"
     fi
-    touch "$STAMP"
   fi
 
   if [ -n "$(git status --porcelain)" ]; then
