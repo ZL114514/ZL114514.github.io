@@ -1,0 +1,345 @@
+/* =========================================================================
+   MD3 Expressive 皮肤 —— 自动生成，请勿手改
+   源色 #39ffcc，由 material-color-utilities 的 HCT 算法推导出完整 tonal palette
+   重新生成：.venv/Scripts/python scripts/gen_md3_theme.py <0xAARRGGBB>
+   ========================================================================= */
+
+:root {
+  /* MD3 shape scale */
+  --md3-corner-xs: 4px;
+  --md3-corner-sm: 8px;
+  --md3-corner-md: 12px;
+  --md3-corner-lg: 16px;
+  --md3-corner-xl: 28px;
+  --md3-corner-full: 999px;
+  /* MD3 motion */
+  --md3-ease-emphasized: cubic-bezier(.2, 0, 0, 1);
+  --md3-ease-standard: cubic-bezier(.2, 0, 0, 1);
+  --md3-ease-spring: cubic-bezier(.34, 1.3, .64, 1);
+}
+
+/* ---------------------------------------------------------- 浅色 */
+[data-md-color-scheme="default"] {
+  --md-sys-color-primary: #005440;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #00a582;
+  --md-sys-color-on-primary-container: #001a12;
+  --md-sys-color-secondary: #22514b;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #6c9a94;
+  --md-sys-color-on-secondary-container: #001a17;
+  --md-sys-color-tertiary: #005256;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #579da2;
+  --md-sys-color-on-tertiary-container: #001a1b;
+  --md-sys-color-error: #98000a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ff574b;
+  --md-sys-color-on-error-container: #360001;
+  --md-sys-color-surface: #effdf5;
+  --md-sys-color-on-surface: #121e19;
+  --md-sys-color-surface-variant: #d5e7dd;
+  --md-sys-color-on-surface-variant: #3a4a44;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #e9f7ef;
+  --md-sys-color-surface-container: #e0eee6;
+  --md-sys-color-surface-container-high: #d8e6de;
+  --md-sys-color-surface-container-highest: #cfddd6;
+  --md-sys-color-surface-dim: #c6d3cc;
+  --md-sys-color-surface-bright: #effdf5;
+  --md-sys-color-outline: #586861;
+  --md-sys-color-outline-variant: #85968e;
+  --md-sys-color-inverse-surface: #27332e;
+  --md-sys-color-inverse-on-surface: #e6f4ec;
+  --md-sys-color-inverse-primary: #00e0b1;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-surface-tint: #006c53;
+  --md-ref-primary-20: #00382a;
+  --md-ref-primary-30: #00513e;
+  --md-ref-primary-40: #006c53;
+  --md-ref-primary-70: #00c298;
+  --md-ref-primary-85: #00f0be;
+  --md-ref-primary-90: #29ffcb;
+  --md-ref-primary-100: #ffffff;
+  --md-ref-tertiary-40: #19686d;
+  --md-ref-tertiary-90: #a8eff4;
+
+  /* 与 Material 变量对接 */
+  --md-primary-fg-color: var(--md-sys-color-primary);
+  --md-primary-fg-color--light: var(--md-ref-primary-90);
+  --md-primary-fg-color--dark: var(--md-ref-primary-30);
+  --md-primary-bg-color: var(--md-sys-color-on-primary);
+  --md-primary-bg-color--light: rgba(255,255,255,0.7);
+  --md-accent-fg-color: var(--md-sys-color-tertiary);
+  --md-accent-fg-color--transparent: rgba(0,82,86,0.1);
+  --md-accent-bg-color: var(--md-sys-color-on-tertiary);
+  --md-accent-bg-color--light: rgba(255,255,255,0.7);
+
+  --md-default-fg-color: var(--md-sys-color-on-surface);
+  --md-default-fg-color--light: var(--md-sys-color-on-surface-variant);
+  --md-default-fg-color--lighter: rgba(18,30,25,0.38);
+  --md-default-fg-color--lightest: rgba(18,30,25,0.12);
+  --md-default-bg-color: var(--md-sys-color-surface);
+  --md-default-bg-color--light: rgba(239,253,245,0.7);
+  --md-default-bg-color--lighter: rgba(239,253,245,0.3);
+  --md-default-bg-color--lightest: rgba(239,253,245,0.12);
+
+  --md-typeset-a-color: var(--md-sys-color-primary);
+  --md-typeset-mark-color: rgba(0,84,64,0.4);
+  --md-typeset-kbd-color: var(--md-sys-color-surface-container-high);
+  --md-typeset-kbd-accent-color: var(--md-sys-color-surface);
+  --md-typeset-kbd-border-color: var(--md-sys-color-outline-variant);
+  --md-typeset-table-color: var(--md-sys-color-outline-variant);
+  --md-typeset-table-color--light: rgba(18,30,25,0.05);
+
+  --md-code-bg-color: var(--md-sys-color-surface-container-low);
+  --md-code-fg-color: var(--md-sys-color-on-surface);
+
+  --md-footer-bg-color: var(--md-sys-color-surface-container);
+  --md-footer-bg-color--dark: var(--md-sys-color-surface-container-high);
+  --md-footer-fg-color: var(--md-sys-color-on-surface-variant);
+  --md-footer-fg-color--light: var(--md-sys-color-on-surface-variant);
+  --md-footer-fg-color--lighter: var(--md-sys-color-on-surface-variant);
+
+  --md-shadow-z1: 0 1px 2px rgba(0,0,0,.05), 0 1px 3px 1px rgba(0,0,0,.04);
+  --md-shadow-z2: 0 1px 2px rgba(0,0,0,.08), 0 2px 6px 2px rgba(0,0,0,.06);
+  --md-shadow-z3: 0 4px 8px 3px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.1);
+}
+
+/* ---------------------------------------------------------- 深色 */
+[data-md-color-scheme="slate"] {
+  --md-sys-color-primary: #00e0b1;
+  --md-sys-color-on-primary: #002a1f;
+  --md-sys-color-primary-container: #007b60;
+  --md-sys-color-on-primary-container: #ffffff;
+  --md-sys-color-secondary: #a0d0c9;
+  --md-sys-color-on-secondary: #002a26;
+  --md-sys-color-secondary-container: #47756f;
+  --md-sys-color-on-secondary-container: #ffffff;
+  --md-sys-color-tertiary: #8cd2d7;
+  --md-sys-color-on-tertiary: #00292c;
+  --md-sys-color-tertiary-container: #2d777c;
+  --md-sys-color-on-tertiary-container: #ffffff;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #520003;
+  --md-sys-color-error-container: #cf2c27;
+  --md-sys-color-on-error-container: #ffffff;
+  --md-sys-color-surface: #0a1611;
+  --md-sys-color-on-surface: #e3f1e9;
+  --md-sys-color-surface-variant: #3a4a44;
+  --md-sys-color-on-surface-variant: #b9cbc2;
+  --md-sys-color-surface-container-lowest: #030d09;
+  --md-sys-color-surface-container-low: #131f1a;
+  --md-sys-color-surface-container: #1a2621;
+  --md-sys-color-surface-container-high: #25312c;
+  --md-sys-color-surface-container-highest: #303c37;
+  --md-sys-color-surface-dim: #0a1611;
+  --md-sys-color-surface-bright: #35413c;
+  --md-sys-color-outline: #8e9f97;
+  --md-sys-color-outline-variant: #607069;
+  --md-sys-color-inverse-surface: #d8e6de;
+  --md-sys-color-inverse-on-surface: #27332e;
+  --md-sys-color-inverse-primary: #00604a;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-surface-tint: #00e0b1;
+  --md-ref-primary-20: #00382a;
+  --md-ref-primary-30: #00513e;
+  --md-ref-primary-40: #006c53;
+  --md-ref-primary-70: #00c298;
+  --md-ref-primary-85: #00f0be;
+  --md-ref-primary-90: #29ffcb;
+  --md-ref-primary-100: #ffffff;
+  --md-ref-tertiary-40: #19686d;
+  --md-ref-tertiary-90: #a8eff4;
+
+  /* 与 Material 变量对接 */
+  --md-primary-fg-color: var(--md-sys-color-primary);
+  --md-primary-fg-color--light: var(--md-ref-primary-90);
+  --md-primary-fg-color--dark: var(--md-ref-primary-30);
+  --md-primary-bg-color: var(--md-sys-color-on-primary);
+  --md-primary-bg-color--light: rgba(0,42,31,0.7);
+  --md-accent-fg-color: var(--md-sys-color-tertiary);
+  --md-accent-fg-color--transparent: rgba(140,210,215,0.1);
+  --md-accent-bg-color: var(--md-sys-color-on-tertiary);
+  --md-accent-bg-color--light: rgba(0,41,44,0.7);
+
+  --md-default-fg-color: var(--md-sys-color-on-surface);
+  --md-default-fg-color--light: var(--md-sys-color-on-surface-variant);
+  --md-default-fg-color--lighter: rgba(227,241,233,0.38);
+  --md-default-fg-color--lightest: rgba(227,241,233,0.12);
+  --md-default-bg-color: var(--md-sys-color-surface);
+  --md-default-bg-color--light: rgba(10,22,17,0.7);
+  --md-default-bg-color--lighter: rgba(10,22,17,0.3);
+  --md-default-bg-color--lightest: rgba(10,22,17,0.12);
+
+  --md-typeset-a-color: var(--md-sys-color-primary);
+  --md-typeset-mark-color: rgba(0,224,177,0.4);
+  --md-typeset-kbd-color: var(--md-sys-color-surface-container-high);
+  --md-typeset-kbd-accent-color: var(--md-sys-color-surface-container-lowest);
+  --md-typeset-kbd-border-color: var(--md-sys-color-outline-variant);
+  --md-typeset-table-color: var(--md-sys-color-outline-variant);
+  --md-typeset-table-color--light: rgba(227,241,233,0.05);
+
+  --md-code-bg-color: var(--md-sys-color-surface-container-low);
+  --md-code-fg-color: var(--md-sys-color-on-surface);
+
+  --md-footer-bg-color: var(--md-sys-color-surface-container);
+  --md-footer-bg-color--dark: var(--md-sys-color-surface-container-high);
+  --md-footer-fg-color: var(--md-sys-color-on-surface-variant);
+  --md-footer-fg-color--light: var(--md-sys-color-on-surface-variant);
+  --md-footer-fg-color--lighter: var(--md-sys-color-on-surface-variant);
+
+  --md-shadow-z1: 0 1px 2px rgba(0,0,0,.3), 0 1px 3px 1px rgba(0,0,0,.15);
+  --md-shadow-z2: 0 1px 2px rgba(0,0,0,.3), 0 2px 6px 2px rgba(0,0,0,.15);
+  --md-shadow-z3: 0 4px 8px 3px rgba(0,0,0,.3), 0 1px 3px rgba(0,0,0,.3);
+}
+
+
+/* ============================================================ 组件层 */
+
+/* 顶栏：MD3 top app bar —— surface 色 + 分割线，不用阴影 */
+.md-header {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: none;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+.md-header__topic,
+.md-header__title,
+.md-header__button,
+.md-header__source,
+.md-header__ellipsis {
+  color: var(--md-sys-color-on-surface);
+}
+.md-header__button:hover { opacity: .8; }
+.md-header--shadow { box-shadow: none; }
+
+/* 搜索框：pill */
+.md-search__form {
+  background-color: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md3-corner-full);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.md-search__form:hover { background-color: var(--md-sys-color-surface-container-highest); }
+.md-search__input::placeholder,
+.md-search__icon { color: var(--md-sys-color-on-surface-variant); }
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+  background-color: var(--md-sys-color-surface-container-high);
+  border-radius: var(--md3-corner-full);
+}
+
+/* 侧边导航：选中项做成 pill */
+.md-nav__link {
+  border-radius: var(--md3-corner-full);
+  padding: .25rem .6rem;
+  transition: background-color .15s var(--md3-ease-standard);
+}
+.md-nav__link:hover { background-color: var(--md-sys-color-surface-container-high); }
+.md-nav__link--active,
+.md-nav__item--active > .md-nav__link {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
+}
+.md-nav__link--active:hover { background-color: var(--md-sys-color-secondary-container); }
+.md-nav--primary .md-nav__title {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 右侧目录：选中项不带底色 */
+.md-nav--secondary .md-nav__link--active {
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+}
+
+/* 代码块：大圆角 + 容器色 */
+.md-typeset pre > code {
+  border-radius: 0;
+  background-color: transparent;
+}
+.md-typeset .highlight,
+.md-typeset pre,
+.md-typeset .highlighttable {
+  border-radius: var(--md3-corner-lg);
+  overflow: hidden;
+}
+.md-typeset code {
+  border-radius: var(--md3-corner-sm);
+  background-color: var(--md-sys-color-surface-container-high);
+}
+.md-typeset pre > code,
+.md-typeset .highlight > pre > code { background-color: transparent; }
+
+/* 提示块 */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: var(--md3-corner-lg);
+  border-width: 0;
+  border-left-width: 2px;
+  box-shadow: none;
+  background-color: var(--md-sys-color-surface-container-low);
+}
+.md-typeset .admonition-title,
+.md-typeset summary { border-radius: var(--md3-corner-lg) var(--md3-corner-lg) 0 0; }
+
+/* 表格 */
+.md-typeset table:not([class]) {
+  border-radius: var(--md3-corner-md);
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: none;
+}
+.md-typeset table:not([class]) th {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 按钮：pill + 轻微浮起 */
+.md-typeset .md-button {
+  border-radius: var(--md3-corner-full);
+  padding: .5rem 1.25rem;
+  border-width: 1px;
+  font-weight: 600;
+  transition: box-shadow .2s var(--md3-ease-standard),
+              background-color .2s var(--md3-ease-standard),
+              transform .2s var(--md3-ease-spring);
+}
+.md-typeset .md-button--primary {
+  background-color: var(--md-ref-primary-85);
+  border-color: transparent;
+  color: var(--md-ref-primary-20);
+}
+.md-typeset .md-button--primary:hover {
+  box-shadow: var(--md-shadow-z2);
+  transform: translateY(-1px);
+}
+
+/* 卡片 */
+.md-typeset .grid.cards > ul > li {
+  border-radius: var(--md3-corner-xl);
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: background-color .2s var(--md3-ease-standard),
+              box-shadow .2s var(--md3-ease-standard),
+              transform .2s var(--md3-ease-spring);
+}
+.md-typeset .grid.cards > ul > li:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-shadow-z2);
+  transform: translateY(-2px);
+}
+
+/* 标签、页脚 */
+.md-typeset .md-tag { border-radius: var(--md3-corner-full); }
+.md-footer { border-top: 1px solid var(--md-sys-color-outline-variant); }
+.md-footer-meta { background-color: var(--md-sys-color-surface-container-high); }
+
+/* 博客列表条目 */
+.md-post--excerpt {
+  border-radius: var(--md3-corner-lg);
+  background-color: var(--md-sys-color-surface-container-low);
+}
