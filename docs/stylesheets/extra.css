@@ -1,0 +1,20 @@
+/* 中英文混排：英文字体优先，中文回落到系统字体 */
+:root {
+  --md-text-font: "Segoe UI", -apple-system, "Microsoft YaHei UI", "Microsoft YaHei",
+    "PingFang SC", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  --md-code-font: "Cascadia Mono", Consolas, "Sarasa Mono SC", "Noto Sans Mono CJK SC", monospace;
+}
+
+/* 正文行距与中文段落间距 */
+.md-typeset {
+  line-height: 1.75;
+}
+
+.md-typeset img {
+  border-radius: 0.2rem;
+}
+
+/* 首页卡片留白 */
+.md-typeset .grid.cards > ul > li {
+  border-radius: 0.4rem;
+}
