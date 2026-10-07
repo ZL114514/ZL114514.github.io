@@ -14,14 +14,18 @@
   let view = 'song'; // song | log
   let q = '', set = '', grade = '', sort = 'score';
 
+  // 两张数据源：records.json（早期批量识别）+ records-notes.json（碎碎念里识别出来的）
+  const SOURCES = ['records.json', 'records-notes.json'];
+  const pick = (f) =>
+    fetch(f, { cache: 'no-cache' })
+      .then((r) => (r.ok ? r.json() : []))
+      .catch(() => []);
+
   function load() {
     root.innerHTML = '<p class="arc-empty">正在加载成绩数据…</p>';
-    fetch('records.json', { cache: 'no-cache' })
-      .then((r) => {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then((raw) => {
+    Promise.all(SOURCES.map(pick))
+      .then((parts) => {
+        const raw = parts.reduce((a, b) => a.concat(b), []);
         const ok = raw.filter((x) => x.song_ok && x.score_ok);
         all = dedupe(ok);
         buildControls(ok, all);
