@@ -42,11 +42,19 @@ trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
   fi
 
   "$PY" scripts/sitegen.py || { echo "!! 生成失败，中止"; exit 1; }
-  "$PY" -m mkdocs build --clean || { echo "!! 构建失败，中止"; exit 1; }
-  touch docs/.nojekyll
+
+  # 轻量同步遇上"啥也没改"是常态（10 分钟一次）：src/ 没动过就不重建、不重传，
+  # 否则 mkdocs --clean 每次都会刷新所有产物的 mtime，增量部署退化成整站上传
+  if [ "$LIGHT" = 1 ] && [ -f "$STAMP" ] && [ -f docs/index.html ] \
+     && [ -z "$(find src -type f -newer "$STAMP" -print -quit)" ]; then
+    echo "源码无变化：跳过构建与部署"
+  else
+    "$PY" -m mkdocs build --clean || { echo "!! 构建失败，中止"; exit 1; }
+    touch docs/.nojekyll
+  fi
 
   # 只传改动过的文件（首次或没有基准时全量），避免每次重传整个媒体目录
-  if [ -f "$STAMP" ]; then
+  if [ -f "$STAMP" ] && [ -f docs/index.html ]; then
     N=$(find docs -type f -newer "$STAMP" -print | grep -c . || true)
   else
     N="全部"
