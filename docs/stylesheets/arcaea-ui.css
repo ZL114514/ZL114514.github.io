@@ -39,7 +39,7 @@
 
 /* 评级用拆包出来的原生图标（PURE MEMORY 用 P 灯） */
 img.arc-grade {
-  height: 1.4rem;
+  height: 1rem;                 /* 碎碎念成绩卡里的小徽标 */
   width: auto;
   display: inline-block;
   vertical-align: middle;
@@ -47,4 +47,5 @@ img.arc-grade {
   padding: 0;
   background: none;
 }
-img.arc-grade[data-g="PURE MEMORY"] { height: 1.55rem; }
+img.arc-grade[data-g="PURE MEMORY"] { height: 1.15rem; }
+#arc img.arc-grade { height: 1.15rem; }          /* 成绩库时间线里略大一号 */

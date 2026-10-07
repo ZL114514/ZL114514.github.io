@@ -81,8 +81,7 @@
 
 #arc .arc-score { text-align: right; }
 #arc .arc-num { font-variant-numeric: tabular-nums; font-size: 1.05rem; font-weight: 700; }
-#arc .arc-grade { height: 1.4rem; }   /* 评级图标，尺寸在 arcaea-ui.css 里统一 */
-#arc img.arc-grade { height: 1.4rem; width: auto; }
+/* 评级图标用 APK 拆包的原图，尺寸统一在 arcaea-ui.css 里定 */
 
 #arc .arc-empty { color: var(--arc-dim); padding: 1.5rem 0; text-align: center; }
 
