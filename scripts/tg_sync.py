@@ -746,24 +746,25 @@ def main():
     # 增量运行只抓到最近一页：状态必须与旧文件合并，否则下次得从最新一路翻回 id 1
     for k, v in (state.get("seen") or {}).items():
         seen.setdefault(k, v)
-    with open(STATE, "w", encoding="utf-8") as f:
-        json.dump({"version": 1, "seen": seen}, f, indent=0)
-    with open(os.path.join(REPO, "scripts", "tg-reactions-seed.json"), "w", encoding="utf-8") as f:
-        json.dump(seed, f, ensure_ascii=False, indent=1)
-    with open(REVIEW, "w", encoding="utf-8") as f:
-        f.write("# 待确认分类（生活随想 ← 图片/短配文帖）\n\n"
+    # 这三份也要 LF + 内容没变不落盘，否则每次同步都会在 Windows 上写成 CRLF 制造提交噪音
+    write_if_changed(STATE, json.dumps({"version": 1, "seen": seen}, indent=0))
+    write_if_changed(os.path.join(REPO, "scripts", "tg-reactions-seed.json"),
+                     json.dumps(seed, ensure_ascii=False, indent=1))
+    _review = io.StringIO()
+    _review.write("# 待确认分类（生活随想 ← 图片/短配文帖）\n\n"
                 "音游成绩帖多为无关键词的成绩截图，需要你标。改法二选一：\n\n"
                 "1. 在 `scripts/tg_category_overrides.json` 里写 `{\"315\": \"音游成绩\"}`（推荐的批量方式）；\n"
                 "2. 直接编辑对应 md 的 `categories:`（重跑同步会保留你的改动）。\n\n"
                 "点标题可在 Telegram 里看原图确认。\n\n"
                 "| id | 日期 | 配文 | 图数 | 现分类 |\n|---|---|---|---|---|\n")
-        for pid in sorted(rev_rows, key=lambda x: int(x)):
-            d, t, n = rev_rows[pid]
-            f.write("| [%s](https://t.me/%s/%s) | %s | %s | %s | 生活随想 |\n"
-                    % (pid, CH, pid, d, t.replace("|", "\\|"), n))
-    with open(CACHE, "w", encoding="utf-8", newline="\n") as f:
-        json.dump({"version": 1, "render": RENDER_V,
-                   "posts": posts, "index": index}, f, ensure_ascii=False, indent=0)
+    for pid in sorted(rev_rows, key=lambda x: int(x)):
+        d, t, n = rev_rows[pid]
+        _review.write("| [%s](https://t.me/%s/%s) | %s | %s | %s | 生活随想 |\n"
+                      % (pid, CH, pid, d, t.replace("|", "\\|"), n))
+    write_if_changed(REVIEW, _review.getvalue())
+    write_if_changed(CACHE, json.dumps({"version": 1, "render": RENDER_V,
+                                       "posts": posts, "index": index},
+                                      ensure_ascii=False, indent=0))
     by_type = {}
     for row in index:
         by_type[row["type"]] = by_type.get(row["type"], 0) + 1
