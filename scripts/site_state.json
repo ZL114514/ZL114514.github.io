@@ -39,7 +39,7 @@
    "type": "score"
   },
   "242": {
-   "changed": "2026-10-07 13:39:01",
+   "changed": "2026-10-07 13:48:27",
    "records": [
     {
      "artist": "Silentroom",
@@ -54,8 +54,7 @@
      "src": "/assets/tg/242/1.jpg",
      "title": "Nhelv"
     }
-   ],
-   "type": "score"
+   ]
   },
   "60": {
    "changed": "2026-10-07 13:39:02",
@@ -287,6 +286,6 @@
    "type": "score"
   }
  },
- "updated": "2026-10-07 13:39:02",
+ "updated": "2026-10-07 13:48:27",
  "version": 1
 }
