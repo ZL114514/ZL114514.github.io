@@ -501,6 +501,20 @@ def index_row(post, st, dest, manual_cats):
             "records": st.get("records") or [], "url": url_of(post, st, dest)}
 
 
+GRADE_IMG = {"PURE MEMORY": "pure", "EX+": "explus", "EX": "ex", "AA": "aa",
+             "A": "a", "B": "b", "C": "c", "D": "d"}
+
+
+def grade_html(grade):
+    """评级用 APK 拆包出来的原生图标（PURE MEMORY 是 P 灯，不是字母评级）。"""
+    key = GRADE_IMG.get(grade or "")
+    if not key:
+        return ""
+    g = html.escape(grade)
+    return ('<img class="arc-grade" data-g="%s" src="/assets/grade/%s.png" alt="%s" loading="lazy">'
+            % (g, key, g))
+
+
 def score_cards(records):
     """识别出来的成绩卡（贴在碎碎念里，同时收进 /record/ 成绩库）。"""
     if not records:
@@ -522,7 +536,7 @@ def score_cards(records):
             '<span class="arc-cmeta"><b>%s</b><small>%s</small></span>'
             '<span class="arc-cnum">%s</span>%s</a>'
             % (src, img, title, sub, num,
-               '<span class="arc-grade">%s</span>' % grade if grade else ""))
+               grade_html(grade)))
     if not cards:
         return ""
     return ('<div class="arc-cards">'

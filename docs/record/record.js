@@ -12,6 +12,14 @@
 
   const WEEK_JP = ['日', '月', '火', '水', '木', '金', '土'];
 
+  // 评级图标用 APK 拆包出来的原图（PURE MEMORY 是 P 灯，不是字母评级）
+  const GRADE_IMG = { 'PURE MEMORY': 'pure', 'EX+': 'explus', 'EX': 'ex',
+                      'AA': 'aa', 'A': 'a', 'B': 'b', 'C': 'c', 'D': 'd' };
+  const gradeHTML = (g) => (GRADE_IMG[g]
+    ? '<img class="arc-grade" data-g="' + esc(g) + '" src="/assets/grade/' + GRADE_IMG[g] +
+      '.png" alt="' + esc(g) + '" loading="lazy">'
+    : '');
+
   let all = [];      // deduped, one entry per song
   let view = 'time'; // time（时间线，默认）| song（按曲目去重）| log（全部记录）
   let q = '', set = '', grade = '', sort = 'score';
@@ -39,7 +47,7 @@
       '</div>' +
       '<div class="arc-score">' +
       '<div class="arc-num">' + esc(fmt(r.score)) + '</div>' +
-      '<div class="arc-grade" data-g="' + esc(r.grade) + '">' + esc(r.grade) + '</div>' +
+      gradeHTML(r.grade) +
       '</div></div>'
     );
   }
@@ -222,7 +230,7 @@
       '</div>' +
       '<div class="arc-score">' +
       '<div class="arc-num">' + esc(fmt(r.score)) + '</div>' +
-      '<div class="arc-grade" data-g="' + esc(r.grade) + '">' + esc(r.grade) + '</div>' +
+      gradeHTML(r.grade) +
       '</div>' +
       '</div>'
     );

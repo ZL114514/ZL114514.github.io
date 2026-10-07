@@ -45,8 +45,7 @@
 .arc-cmeta b { font-size: .8rem; line-height: 1.2; }
 .arc-cmeta small { font-size: .62rem; color: var(--md-default-fg-color--light); }
 .arc-cnum { font-variant-numeric: tabular-nums; font-weight: 700; }
-.arc-grade { font-size: .62rem; border: 1px solid currentColor; border-radius: .3rem;
-             padding: 0 .25rem; color: var(--md-default-fg-color--light); }
+img.arc-grade { height: 1.15rem; width: auto; border: 0; padding: 0; background: none; }
 
 /* /notes/ 顶部：滚到底自动接上更早的月份（no-JS 时这里就是个摆设，兜底在下面 details 里） */
 .tl-next { display: flex; justify-content: center; margin: 1.4rem 0 1.8rem; }

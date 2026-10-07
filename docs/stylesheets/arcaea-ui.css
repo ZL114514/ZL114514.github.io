@@ -1,0 +1,50 @@
+/* Arcaea 官方素材：Exo 字体 + 评级图标
+   （字体来自 APK assets/Fonts，图标来自 APK assets/img/grade 与 assets/img/clear_type） */
+
+@font-face {
+  font-family: "Exo";
+  src: url("/assets/fonts/Exo-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo";
+  src: url("/assets/fonts/Exo-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo";
+  src: url("/assets/fonts/Exo-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo";
+  src: url("/assets/fonts/Exo-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 成绩库 + 碎碎念用游戏同款字体（中文没有字形，逐字回落到系统字体，不影响中文正文） */
+.arc-num, .arc-title, .arc-sub, .arc-tag, .arc-stat, .arc-tl-date, .arc-date,
+.arc-cnum, .arc-cmeta, .arc-empty, .arc-views button, .arc-official,
+.tl-date, .tl-time, .tl-tg, .tl-text, .tl-more, .tl-next span, .nt-month-title {
+  font-family: "Exo", Roboto, system-ui, -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+/* 评级用拆包出来的原生图标（PURE MEMORY 用 P 灯） */
+img.arc-grade {
+  height: 1.4rem;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+img.arc-grade[data-g="PURE MEMORY"] { height: 1.55rem; }

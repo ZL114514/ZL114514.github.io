@@ -139,6 +139,7 @@ extra_css:
   - stylesheets/md3-expressive.css
   - stylesheets/tg-reactions.css
   - stylesheets/notes.css
+  - stylesheets/arcaea-ui.css
 
 extra_javascript:
   - javascripts/tg-reactions.js

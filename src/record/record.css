@@ -81,12 +81,8 @@
 
 #arc .arc-score { text-align: right; }
 #arc .arc-num { font-variant-numeric: tabular-nums; font-size: 1.05rem; font-weight: 700; }
-#arc .arc-grade { font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
-#arc .arc-grade[data-g="PURE MEMORY"] { color: #e8a33d; }
-#arc .arc-grade[data-g="EX+"] { color: #c9739b; }
-#arc .arc-grade[data-g="EX"]  { color: #5b8cff; }
-#arc .arc-grade[data-g="AA"]  { color: #4aa96c; }
-#arc .arc-grade[data-g="A"]   { color: #4aa96c; }
+#arc .arc-grade { height: 1.4rem; }   /* 评级图标，尺寸在 arcaea-ui.css 里统一 */
+#arc img.arc-grade { height: 1.4rem; width: auto; }
 
 #arc .arc-empty { color: var(--arc-dim); padding: 1.5rem 0; text-align: center; }
 
