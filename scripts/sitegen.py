@@ -170,6 +170,20 @@ def md_inline(text):
 
 # ---------------------------------------------------------------- 片段
 
+GRADE_IMG = {"PURE MEMORY": "pure", "EX+": "explus", "EX": "ex", "AA": "aa",
+             "A": "a", "B": "b", "C": "c", "D": "d"}
+
+
+def grade_html(grade):
+    """评级用 APK 拆包出来的原生图标（PURE MEMORY 是 P 灯）。"""
+    key = GRADE_IMG.get(grade or "")
+    if not key:
+        return ""
+    g = esc(grade)
+    return ('<img class="arc-grade" data-g="%s" src="/assets/grade/%s.png" alt="%s" loading="lazy">'
+            % (g, key, g))
+
+
 def score_cards(records):
     """和 tg_sync 里的同一套卡片（时间线上就地展开成绩）。"""
     cards = []
@@ -186,7 +200,7 @@ def score_cards(records):
                      '<span class="arc-cnum">%s</span>%s</a>'
                      % (esc(r.get("src") or ("/record/jackets/" + jacket)), img,
                         esc(r.get("title") or r.get("song_id")), esc(sub), num,
-                        '<span class="arc-grade">%s</span>' % esc(r["grade"]) if r.get("grade") else ""))
+                        grade_html(r.get("grade"))))
     if not cards:
         return ""
     return ('<div class="arc-cards"><p class="arc-cards-head">识别到的音游成绩'
