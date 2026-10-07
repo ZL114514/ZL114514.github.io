@@ -602,15 +602,16 @@ def main():
         site_state = {}
         print("! 没有 scripts/site_state.json（后台状态），一律按碎碎念处理")
 
+    state = {}
+    if os.path.exists(STATE):
+        state = json.load(open(STATE, encoding="utf-8"))
+
     if args.from_cache:
         cache = json.load(open(CACHE, encoding="utf-8"))
         posts = cache.get("posts") or []
         print("用缓存重排 %d 条（不抓 TG）" % len(posts))
         args.no_media = True
     else:
-        state = {}
-        if os.path.exists(STATE):
-            state = json.load(open(STATE, encoding="utf-8"))
         known = {int(k) for k in state.get("seen", {})}
         print("已知帖子 %d 条，开始抓取%s" % (len(known), "（全量）" if args.full else "（增量）"))
         posts = scrape(args.full, known if known else None)

@@ -1,0 +1,292 @@
+{
+ "posts": {
+  "101": {
+   "changed": "2026-10-07 13:39:01",
+   "records": [
+    {
+     "artist": "Zekk",
+     "grade": "A",
+     "jacket": "libertas.jpg",
+     "jacket_conf": 0.9971,
+     "min_digit_conf": 0.691,
+     "post": 101,
+     "score": 9361456,
+     "set": "single",
+     "song_id": "libertas",
+     "src": "/assets/tg/101/1.jpg",
+     "title": "Libertas"
+    }
+   ],
+   "type": "score"
+  },
+  "102": {
+   "changed": "2026-10-07 13:39:01",
+   "records": [
+    {
+     "artist": "Team Grimoire",
+     "grade": "EX",
+     "jacket": "dantalion.jpg",
+     "jacket_conf": 0.9979,
+     "min_digit_conf": 0.676,
+     "post": 102,
+     "score": 9858974,
+     "set": "vs",
+     "song_id": "dantalion",
+     "src": "/assets/tg/102/1.jpg",
+     "title": "Dantalion"
+    }
+   ],
+   "type": "score"
+  },
+  "242": {
+   "changed": "2026-10-07 13:39:01",
+   "records": [
+    {
+     "artist": "Silentroom",
+     "grade": null,
+     "jacket": "nhelv.jpg",
+     "jacket_conf": 0.7809,
+     "min_digit_conf": null,
+     "post": 242,
+     "score": null,
+     "set": "base",
+     "song_id": "nhelv",
+     "src": "/assets/tg/242/1.jpg",
+     "title": "Nhelv"
+    }
+   ],
+   "type": "score"
+  },
+  "60": {
+   "changed": "2026-10-07 13:39:02",
+   "records": [
+    {
+     "artist": "ETIA.",
+     "grade": "EX",
+     "jacket": "mvurbd.jpg",
+     "jacket_conf": 0.9963,
+     "min_digit_conf": 0.663,
+     "post": 60,
+     "score": 9847646,
+     "set": "rotaeno",
+     "song_id": "mvurbd",
+     "src": "/assets/tg/60/1.jpg",
+     "title": "MVURBD"
+    }
+   ],
+   "type": "score"
+  },
+  "67": {
+   "changed": "2026-10-07 13:39:02",
+   "records": [
+    {
+     "artist": "Team Grimoire",
+     "grade": "EX+",
+     "jacket": "sheriruth.jpg",
+     "jacket_conf": 0.9967,
+     "min_digit_conf": 0.643,
+     "post": 67,
+     "score": 9914141,
+     "set": "core",
+     "song_id": "sheriruth",
+     "src": "/assets/tg/67/1.jpg",
+     "title": "Sheriruth"
+    },
+    {
+     "artist": "Team Grimoire vs Laur",
+     "grade": "AA",
+     "jacket": "grievouslady.jpg",
+     "jacket_conf": 0.9973,
+     "min_digit_conf": 0.611,
+     "post": 67,
+     "score": 9649472,
+     "set": "yugamu",
+     "song_id": "grievouslady",
+     "src": "/assets/tg/67/2.jpg",
+     "title": "Grievous Lady"
+    }
+   ],
+   "type": "score"
+  },
+  "69": {
+   "changed": "2026-10-07 13:39:02",
+   "records": [
+    {
+     "artist": "USAO",
+     "grade": "EX",
+     "jacket": "cyaegha.jpg",
+     "jacket_conf": 0.9973,
+     "min_digit_conf": 0.648,
+     "post": 69,
+     "score": 9869636,
+     "set": "zettai",
+     "song_id": "cyaegha",
+     "src": "/assets/tg/69/1.jpg",
+     "title": "Cyaegha"
+    }
+   ],
+   "type": "score"
+  },
+  "70": {
+   "changed": "2026-10-07 13:39:02",
+   "records": [
+    {
+     "artist": "Team Grimoire",
+     "grade": "EX+",
+     "jacket": "sheriruth.jpg",
+     "jacket_conf": 0.9967,
+     "min_digit_conf": 0.691,
+     "post": 70,
+     "score": 9970618,
+     "set": "core",
+     "song_id": "sheriruth",
+     "src": "/assets/tg/70/1.jpg",
+     "title": "Sheriruth"
+    }
+   ],
+   "type": "score"
+  },
+  "71": {
+   "changed": "2026-10-07 13:39:02",
+   "records": [
+    {
+     "artist": "s-don",
+     "grade": "EX+",
+     "jacket": "maliciousmischance.jpg",
+     "jacket_conf": 0.9944,
+     "min_digit_conf": 0.689,
+     "post": 71,
+     "score": 9907737,
+     "set": "single",
+     "song_id": "maliciousmischance",
+     "src": "/assets/tg/71/1.jpg",
+     "title": "Malicious Mischance"
+    }
+   ],
+   "type": "score"
+  },
+  "75": {
+   "changed": "2026-10-07 13:39:02",
+   "records": [
+    {
+     "artist": "Kobaryo",
+     "grade": "EX+",
+     "jacket": "viciousheroism.jpg",
+     "jacket_conf": 0.9966,
+     "min_digit_conf": 0.624,
+     "post": 75,
+     "score": 9940157,
+     "set": "zettai",
+     "song_id": "viciousheroism",
+     "src": "/assets/tg/75/1.jpg",
+     "title": "Vicious Heroism"
+    }
+   ],
+   "type": "score"
+  },
+  "77": {
+   "changed": "2026-10-07 13:39:02",
+   "records": [
+    {
+     "artist": "かめりあ",
+     "grade": "EX+",
+     "jacket": "attraqtia.jpg",
+     "jacket_conf": 0.9977,
+     "min_digit_conf": 0.729,
+     "post": 77,
+     "score": 9921037,
+     "set": "single",
+     "song_id": "attraqtia",
+     "src": "/assets/tg/77/1.jpg",
+     "title": "AttraqtiA"
+    },
+    {
+     "artist": "Sakuzyo",
+     "grade": "AA",
+     "jacket": "fractureray.jpg",
+     "jacket_conf": 0.9969,
+     "min_digit_conf": 0.799,
+     "post": 77,
+     "score": 9696177,
+     "set": "rei",
+     "song_id": "fractureray",
+     "src": "/assets/tg/77/2.jpg",
+     "title": "Fracture Ray"
+    }
+   ],
+   "type": "score"
+  },
+  "80": {
+   "changed": "2026-10-07 13:39:01",
+   "records": [
+    {
+     "artist": "Team Grimoire vs Laur",
+     "grade": "AA",
+     "jacket": "grievouslady.jpg",
+     "jacket_conf": 0.9973,
+     "min_digit_conf": 0.698,
+     "post": 80,
+     "score": 9759870,
+     "set": "yugamu",
+     "song_id": "grievouslady",
+     "src": "/assets/tg/80/1.jpg",
+     "title": "Grievous Lady"
+    }
+   ],
+   "type": "score"
+  },
+  "85": {
+   "changed": "2026-10-07 13:39:01",
+   "records": [
+    {
+     "artist": "-45",
+     "grade": "EX+",
+     "jacket": "gengaozo.jpg",
+     "jacket_conf": 0.8102,
+     "min_digit_conf": 0.501,
+     "post": 85,
+     "score": 9927242,
+     "set": "extend",
+     "song_id": "gengaozo",
+     "src": "/assets/tg/85/1.jpg",
+     "title": "G e n g a o z o"
+    }
+   ],
+   "type": "score"
+  },
+  "86": {
+   "changed": "2026-10-07 13:39:01",
+   "records": [
+    {
+     "artist": "WAiKURO",
+     "grade": "EX",
+     "jacket": "amazingmightyyyy.jpg",
+     "jacket_conf": 0.9991,
+     "min_digit_conf": 0.665,
+     "post": 86,
+     "score": 9836898,
+     "set": "maimai",
+     "song_id": "amazingmightyyyy",
+     "src": "/assets/tg/86/1.jpg",
+     "title": "AMAZING MIGHTYYYY!!!!"
+    },
+    {
+     "artist": "Nothing But Requiem with Museo",
+     "grade": "EX+",
+     "jacket": "pentiment.jpg",
+     "jacket_conf": 0.996,
+     "min_digit_conf": 0.661,
+     "post": 86,
+     "score": 9911934,
+     "set": "finale",
+     "song_id": "pentiment",
+     "src": "/assets/tg/86/2.jpg",
+     "title": "Pentiment"
+    }
+   ],
+   "type": "score"
+  }
+ },
+ "updated": "2026-10-07 13:39:02",
+ "version": 1
+}
