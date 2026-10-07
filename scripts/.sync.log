@@ -2617,3 +2617,7 @@ Prefix dict has been built successfully.
 INFO    -  Documentation built in 2.70 seconds
 待部署文件：555
 X99 镜像更新完成（555 个文件）
+warning: in the working copy of 'scripts/.sync.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'scripts/.tg_state.json', CRLF will be replaced by LF the next time Git touches it
+已推送到 GitHub
+=== 2026-10-07 03:02:38 完成 ===

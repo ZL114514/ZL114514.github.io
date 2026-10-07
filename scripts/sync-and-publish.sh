@@ -1,19 +1,49 @@
 #!/usr/bin/env bash
-# Telegram -> 博客 全链路：抓取 -> 构建 -> 部署 X99 镜像 -> 推 GitHub -> 播种 reaction
-# 幂等，可反复跑（tg_sync.py 只处理新增/变更的帖子）。
+# Telegram -> 博客 全链路：拉后台状态 -> 抓取/重排 -> 生成时间线 -> 构建 -> 部署 X99 镜像 -> 推 GitHub
+#
+#   scripts/sync-and-publish.sh            全量：抓 TG（6 小时一次的计划任务）
+#   scripts/sync-and-publish.sh --light    轻量：不抓 TG，用缓存按后台状态重排（10 分钟一次）
+#
+# 幂等，可反复跑（tg_sync.py 只处理新增/变更/改过状态的帖子；sitegen.py 产物全是派生的）。
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
 PY="./.venv/Scripts/python"
 LOG="scripts/.sync.log"
 STAMP="scripts/.last_deploy"
+LIGHT=0
+[ "${1:-}" = "--light" ] && LIGHT=1
+MODE=$([ "$LIGHT" = 1 ] && echo 轻量 || echo 全量)
+
+# 两个计划任务（6 小时 / 10 分钟）可能撞车：目录锁串行化，陈旧锁自动接管
+LOCK="scripts/.sync.lock"
+if ! mkdir "$LOCK" 2>/dev/null; then
+  if [ -n "$(find "$LOCK" -maxdepth 0 -mmin +30 2>/dev/null)" ]; then
+    rm -rf "$LOCK"; mkdir "$LOCK" 2>/dev/null || exit 0
+  else
+    echo "=== $(date '+%F %T') 已有同步在跑，跳过 ===" >>"$LOG"; exit 0
+  fi
+fi
+trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
 
 {
-  echo "=== $(date '+%F %T') 同步开始 ==="
-  # 全量扫描：16 页 ~15 秒，媒体已存在不会重下；增量模式只能看到最近一页，
-  # 老帖被编辑/新补媒体就永远发现不了
-  "$PY" scripts/tg_sync.py --full || { echo "!! 抓取失败，中止"; exit 1; }
-  "$PY" scripts/tg_seed_reactions.py
+  echo "=== $(date '+%F %T') 同步开始（$MODE）==="
+
+  # 后台（X99 /admin）里的状态：碎碎念 / 博文 / 音游成绩 / 隐藏，外加识别出的成绩与曲绘
+  "$PY" scripts/sitegen.py --pull || echo "!! 后台状态没拉回来，沿用本地那份"
+
+  if [ "$LIGHT" = 1 ] && [ -f scripts/tg_posts.json ]; then
+    # 轻量：不碰网络，按状态把页面重排一遍（后台改完 10 分钟内落地）
+    "$PY" scripts/tg_sync.py --from-cache || { echo "!! 重排失败，中止"; exit 1; }
+  else
+    # 全量扫描：16 页 ~15 秒，媒体已存在不会重下；增量模式只能看到最近一页，
+    # 老帖被编辑/新补媒体就永远发现不了
+    "$PY" scripts/tg_sync.py --full || { echo "!! 抓取失败，中止"; exit 1; }
+    "$PY" scripts/tg_seed_reactions.py
+  fi
+
+  "$PY" scripts/sitegen.py || { echo "!! 生成失败，中止"; exit 1; }
   "$PY" -m mkdocs build --clean || { echo "!! 构建失败，中止"; exit 1; }
+  touch docs/.nojekyll
 
   # 只传改动过的文件（首次或没有基准时全量），避免每次重传整个媒体目录
   if [ -f "$STAMP" ]; then
@@ -47,7 +77,7 @@ STAMP="scripts/.last_deploy"
 
   if [ -n "$(git status --porcelain)" ]; then
     git add -A
-    git commit -q -m "sync: telegram $(date '+%F %H:%M')"
+    git commit -q -m "sync($MODE): telegram $(date '+%F %H:%M')" || true
     for attempt in 1 2 3 4 5; do          # GitHub SSH 时不时被掐断，重试到远端确认一致
       git push -q 2>/dev/null || true
       if [ "$(git ls-remote origin -h refs/heads/main | cut -c1-40)" = "$(git rev-parse HEAD)" ]; then

@@ -50,6 +50,8 @@ theme:
 nav:
   - 首页: index.md
   - 博客: blog/index.md
+  - 碎碎念: notes/index.md
+  - 成绩库: record/index.md
   - 关于: about/index.md
 
 plugins:
@@ -111,9 +113,11 @@ extra_css:
   - stylesheets/extra.css
   - stylesheets/md3-expressive.css
   - stylesheets/tg-reactions.css
+  - stylesheets/notes.css
 
 extra_javascript:
   - javascripts/tg-reactions.js
+  - javascripts/notes.js
 
 extra:
   generator: false

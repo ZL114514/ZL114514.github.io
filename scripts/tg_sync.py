@@ -26,6 +26,9 @@ SRC = os.path.join(REPO, "src")
 POSTS_DIR = os.path.join(SRC, "blog", "posts")
 MEDIA_DIR = os.path.join(SRC, "assets", "tg")
 STATE = os.path.join(REPO, "scripts", ".tg_state.json")
+SITE_STATE = os.path.join(REPO, "scripts", "site_state.json")   # 后台状态快照（sitegen --pull 拉回）
+CACHE = os.path.join(REPO, "scripts", "tg_posts.json")          # 抓取结果缓存（--from-cache 用，免二次抓 TG）
+NOTES_DIR = os.path.join(SRC, "notes")
 REVIEW = os.path.join(REPO, "scripts", "tg-review.md")
 CH = "zlzlzl_ch"
 CST = timezone(timedelta(hours=8))
@@ -321,12 +324,14 @@ def scrape(full, known_ids):
     return [seen[k] for k in sorted(seen)]
 
 
-RENDER_V = "r4"   # 渲染器版本：只改 render()/front matter 时把它 +1，否则帖子 hash 不变、老帖不会被重写
+RENDER_V = "r5"   # 渲染器版本：只改 render()/front matter 时把它 +1，否则帖子 hash 不变、老帖不会被重写
 
 
-def sha(post):
+def sha(post, extra=""):
+    """内容哈希。extra 用来把后台状态（碎碎念/博文/成绩/隐藏）也拌进去：
+    后台改一次状态，这一篇就必须重写一次。"""
     raw = json.dumps([RENDER_V, post["id"], post["dt"], post["text"], post["photos"],
-                      post["videos"], post["docs"]], ensure_ascii=False, sort_keys=True)
+                      post["videos"], post["docs"], extra], ensure_ascii=False, sort_keys=True)
     return hashlib.sha1(raw.encode()).hexdigest()[:12]
 
 
@@ -407,9 +412,119 @@ def title_of(post):
     return "Telegram %s" % post["dt"][:10]
 
 
-def render(post, media, videos, manual_cats):
+def load_site_state():
+    """后台改的状态快照（scripts/site_state.json，由 sitegen --pull 从 X99 拉回来）。"""
+    with open(SITE_STATE, encoding="utf-8") as f:
+        return (json.load(f).get("posts") or {})
+
+
+def post_state(site_state, post):
+    st = site_state.get(str(post["id"])) or {}
+    return st if isinstance(st, dict) else {}
+
+
+def state_sig(st):
+    return json.dumps({k: st.get(k) for k in ("type", "hidden", "records")},
+                      ensure_ascii=False, sort_keys=True)
+
+
+def rel_dest(post, st):
+    """落点：隐藏 -> None；分享成博文 -> blog/posts/；其余 -> notes/<月>/。"""
+    if st.get("hidden"):
+        return None
+    if st.get("type") == "post":
+        return os.path.join("blog", "posts", "tg-%d.md" % post["id"])
+    return os.path.join("notes", post["dt"][:7], "tg-%d.md" % post["id"])
+
+
+def note_excerpt(post, limit=280):
+    """时间线卡片用的纯文本：换行保留，标签剥掉，裁到 limit 字。"""
+    t = re.sub(r"<br\s*/?>", "\n", post.get("text") or "")
+    t = re.sub(r"<[^>]*>", "", t)
+    t = re.sub(r"[ \t]+\n", "\n", t).strip()
+    return t[:limit]
+
+
+def local_images(post):
+    """磁盘上已有的媒体（下载过就不再碰网络）。"""
+    mdir = os.path.join(MEDIA_DIR, str(post["id"]))
+    out = []
+    for i in range(1, len(post.get("photos") or []) + 1):
+        if os.path.exists(os.path.join(mdir, "%d.jpg" % i)):
+            out.append("/assets/tg/%d/%d.jpg" % (post["id"], i))
+    for i in range(1, len(post.get("videos") or []) + 1):
+        if os.path.exists(os.path.join(mdir, "video-%d.mp4" % i)):
+            out.append("/assets/tg/%d/video-%d.mp4" % (post["id"], i))
+    return out
+
+
+def local_media_slots(post):
+    """按 photos 顺序逐张对位（缺的留空），供不联网重排时用——空位不能省，
+    否则合并帖里每段的图会整体串位。"""
+    mdir = os.path.join(MEDIA_DIR, str(post["id"]))
+    out = []
+    for i in range(1, len(post.get("photos") or []) + 1):
+        rel = "/assets/tg/%d/%d.jpg" % (post["id"], i)
+        out.append(rel if os.path.exists(os.path.join(mdir, "%d.jpg" % i)) else "")
+    return out
+
+
+def url_of(post, st, dest):
     dt = datetime.fromisoformat(post["dt"]).astimezone(CST)
+    if st.get("type") == "post":
+        return "/blog/%s/tg-%d/" % (dt.strftime("%Y/%m/%d"), post["id"])
+    return "/notes/%s/tg-%d/" % (dt.strftime("%Y-%m"), post["id"]) if dest else None
+
+
+def index_row(post, st, dest, manual_cats):
+    """站点/后台共用的索引行（也是 scripts/tg_posts.json 里的 index）。"""
+    dt = datetime.fromisoformat(post["dt"]).astimezone(CST)
+    return {"id": post["id"], "month": dt.strftime("%Y-%m"), "date": dt.strftime("%Y-%m-%d %H:%M:%S"),
+            "title": title_of(post), "text": note_excerpt(post), "images": local_images(post),
+            "n_photos": len(post.get("photos") or []), "views": post.get("views") or "-",
+            "merged": post.get("merged") or 0, "tg_link": post["link"],
+            "cats": manual_cats or [classify(post)],
+            "type": st.get("type") or "mutter", "hidden": bool(st.get("hidden")),
+            "records": st.get("records") or [], "url": url_of(post, st, dest)}
+
+
+def score_cards(records):
+    """识别出来的成绩卡（贴在碎碎念里，同时收进 /record/ 成绩库）。"""
+    if not records:
+        return ""
+    cards = []
+    for r in records:
+        if not isinstance(r, dict):
+            continue
+        jacket = r.get("jacket") or ""
+        src = r.get("src") or (("/record/jackets/" + jacket) if jacket else "/record/")
+        img = '<img src="/record/jackets/%s" alt="" loading="lazy">' % jacket if jacket else ""
+        score = r.get("score")
+        num = "—" if score is None else re.sub(r"\B(?=(\d{3})+(?!\d))", "'", "%d" % score)
+        title = html.escape(r.get("title") or r.get("song_id") or "")
+        sub = html.escape(" · ".join(x for x in (r.get("artist"), r.get("set")) if x))
+        grade = html.escape(r.get("grade") or "")
+        cards.append(
+            '<a class="arc-card" href="%s" target="_blank" rel="noopener" title="看原图">%s'
+            '<span class="arc-cmeta"><b>%s</b><small>%s</small></span>'
+            '<span class="arc-cnum">%s</span>%s</a>'
+            % (src, img, title, sub, num,
+               '<span class="arc-grade">%s</span>' % grade if grade else ""))
+    if not cards:
+        return ""
+    return ('<div class="arc-cards">'
+            '<p class="arc-cards-head">识别到的音游成绩 <span>曲绘匹配 + 自带字体模板，不用 OCR</span></p>'
+            + "".join(cards) + "</div>")
+
+
+def render(post, media, videos, manual_cats, st=None):
+    st = st or {}
+    dt = datetime.fromisoformat(post["dt"]).astimezone(CST)
+    ym = dt.strftime("%Y-%m")
+    typ = st.get("type") or "mutter"
     cats = manual_cats or [classify(post)]
+    if typ == "post" and "碎碎念" not in cats:      # 从碎碎念分享出来的博文标一下
+        cats = cats + ["碎碎念"]
     lines = ["---",
              "date: %s" % dt.isoformat(sep=" ", timespec="seconds"),
              'title: "%s"' % title_of(post).replace('"', "'"),
@@ -425,9 +540,13 @@ def render(post, media, videos, manual_cats):
              *(["tg_ids: [%s]" % ", ".join(str(i) for i in post["ids"])] if post.get("merged") else []),
              'tg_link: "%s"' % post["link"],
              'tg_views: "%s"' % (post["views"] or "-"),
-             "tg_hash: %s" % sha(post),
+             "tg_type: %s" % typ,
+             "tg_hash: %s" % sha(post, state_sig(st)),
              "---", ""]
     body = []
+    if typ != "post":                               # 碎碎念/成绩是独立页面，给个回时间线的入口
+        body.append('<p class="note-back"><a href="/notes/%s/">← %s 碎碎念时间线</a></p>' % (ym, ym))
+        body.append("")
     it = iter(media)
     parts = post.get("parts") or [{"text": post["text"], "n_photos": len(media),
                                    "videos": videos, "docs": post["docs"], "link": post["link"]}]
@@ -451,6 +570,10 @@ def render(post, media, videos, manual_cats):
                         % (d["name"], d["size"], part.get("link") or post["link"]))
         if part["text"]:
             body.append(part["text"])
+    cards = score_cards(st.get("records") or [])
+    if cards:
+        body.append("")
+        body.append(cards)
     body.append("")
     body.append('<div class="tg-rx" data-post="%d"></div>' % post["id"])
     body.append("")
@@ -469,36 +592,65 @@ def main():
     ap.add_argument("--no-media", action="store_true")
     ap.add_argument("--group-window", type=int, default=GROUP_WINDOW,
                     help="同一时段合并的时间窗（秒），0 = 不合并")
+    ap.add_argument("--from-cache", action="store_true",
+                    help="不抓 TG，用 scripts/tg_posts.json 里的缓存重排页面（后台改状态后的快速重排）")
     args = ap.parse_args()
 
-    state = {}
-    if os.path.exists(STATE):
-        state = json.load(open(STATE, encoding="utf-8"))
-    known = {int(k) for k in state.get("seen", {})}
-    print("已知帖子 %d 条，开始抓取%s" % (len(known), "（全量）" if args.full else "（增量）"))
-    posts = scrape(args.full, known if known else None)
-    raw = len(posts)
-    posts = merge_groups(posts, args.group_window) if args.group_window else posts
-    if args.limit:
-        posts = posts[-args.limit:]
-    print("抓到 %d 条 -> 合并后 %d 条（%d 条为同段聚合）"
-          % (raw, len(posts), sum(1 for p in posts if p.get("merged"))))
+    try:
+        site_state = load_site_state()
+    except Exception:
+        site_state = {}
+        print("! 没有 scripts/site_state.json（后台状态），一律按碎碎念处理")
+
+    if args.from_cache:
+        cache = json.load(open(CACHE, encoding="utf-8"))
+        posts = cache.get("posts") or []
+        print("用缓存重排 %d 条（不抓 TG）" % len(posts))
+        args.no_media = True
+    else:
+        state = {}
+        if os.path.exists(STATE):
+            state = json.load(open(STATE, encoding="utf-8"))
+        known = {int(k) for k in state.get("seen", {})}
+        print("已知帖子 %d 条，开始抓取%s" % (len(known), "（全量）" if args.full else "（增量）"))
+        posts = scrape(args.full, known if known else None)
+        raw = len(posts)
+        posts = merge_groups(posts, args.group_window) if args.group_window else posts
+        if args.limit:
+            posts = posts[-args.limit:]
+        print("抓到 %d 条 -> 合并后 %d 条（%d 条为同段聚合）"
+              % (raw, len(posts), sum(1 for p in posts if p.get("merged"))))
 
     os.makedirs(POSTS_DIR, exist_ok=True)
-    stats = {"new": 0, "updated": 0, "skipped": 0, "media": 0, "video_bytes": 0, "img_bytes": 0}
+    stats = {"new": 0, "updated": 0, "skipped": 0, "moved": 0, "removed": 0,
+             "media": 0, "video_bytes": 0, "img_bytes": 0}
+    index = []
     for p in posts:
-        slug = "tg-%d" % p["id"]
-        md_path = os.path.join(POSTS_DIR, slug + ".md")
-        old_fm, _ = read_front_matter(md_path)
-        h = sha(p)
-        if old_fm.get("tg_hash") == h and os.path.exists(md_path):
+        st = post_state(site_state, p)
+        rel = rel_dest(p, st)
+        dest = os.path.join(SRC, rel) if rel else None
+        # 上一篇可能落在另一个位置（刚分享出去 / 刚取消分享 / 刚隐藏），两处都找一遍
+        cands = [c for c in [dest,
+                             os.path.join(POSTS_DIR, "tg-%d.md" % p["id"]),
+                             os.path.join(NOTES_DIR, p["dt"][:7], "tg-%d.md" % p["id"])] if c]
+        old_path, old_fm = None, {}
+        for c in cands:
+            if os.path.exists(c):
+                old_path, old_fm = c, read_front_matter(c)[0]
+                break
+        h = sha(p, state_sig(st))
+        if dest and old_path == dest and old_fm.get("tg_hash") == h:
             stats["skipped"] += 1
+            index.append(index_row(p, st, dest, None))
             continue
-        manual = []
-        if old_fm.get("categories"):
-            pass  # 用户手改过就保留：下面按旧文件里的分类集合判断
         media, videos = [], []
-        if not args.no_media:
+        if args.from_cache:                       # 缓存重排：直接用磁盘上已有的
+            media = local_media_slots(p)
+            videos = p.get("videos") or []
+        elif args.no_media:
+            media = local_media_slots(p)
+            videos = p.get("videos") or []
+        else:
             mdir = os.path.join(MEDIA_DIR, str(p["id"]))
             for i, u in enumerate(p["photos"], 1):
                 rel = "/assets/tg/%d/%d.jpg" % (p["id"], i)
@@ -522,17 +674,23 @@ def main():
                 videos.append(v)
         old_cats = None
         # 保留用户手改的分类：直接读原文件 front matter 的列表
-        if os.path.exists(md_path):
-            txt = open(md_path, encoding="utf-8").read()
+        if old_path:
+            txt = open(old_path, encoding="utf-8").read()
             m = re.search(r"^categories:\n((?:\s*-\s*.*\n)+)", txt, re.M)
             if m and old_fm.get("tg_hash"):
                 cats = re.findall(r"-\s*(.+)", m.group(1))
                 if cats and cats != [classify(p)]:
                     old_cats = [c.strip() for c in cats]
-        new = (os.path.exists(md_path))
-        with open(md_path, "w", encoding="utf-8", newline="\n") as f:
-            f.write(render(p, media, videos, old_cats))
-        stats["updated" if new else "new"] += 1
+        if dest:
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            with open(dest, "w", encoding="utf-8", newline="\n") as f:
+                f.write(render(p, media, videos, old_cats, st))
+            stats["updated" if old_path == dest else "new"] += 1
+        for c in cands:                           # 换位置/隐藏：清掉旧文件
+            if c != dest and os.path.exists(c):
+                os.remove(c)
+                stats["moved" if dest else "removed"] += 1
+        index.append(index_row(p, st, dest, old_cats))
 
     # 播种表 / 待确认清单都按"全部帖子 + 已有文件"合并生成：
     # 增量运行只抓到最近一页，不能因此把这两份文件截断
@@ -588,9 +746,18 @@ def main():
             d, t, n = rev_rows[pid]
             f.write("| [%s](https://t.me/%s/%s) | %s | %s | %s | 生活随想 |\n"
                     % (pid, CH, pid, d, t.replace("|", "\\|"), n))
-    print("新增 %d / 更新 %d / 跳过 %d | 媒体 %d 张 %.1f MB | 视频 %.1f MB"
-          % (stats["new"], stats["updated"], stats["skipped"], stats["media"],
-             stats["img_bytes"] / 1e6, stats["video_bytes"] / 1e6))
+    with open(CACHE, "w", encoding="utf-8", newline="\n") as f:
+        json.dump({"version": 1, "render": RENDER_V,
+                   "generated": time.strftime("%Y-%m-%d %H:%M:%S"),
+                   "posts": posts, "index": index}, f, ensure_ascii=False, indent=0)
+    by_type = {}
+    for row in index:
+        by_type[row["type"]] = by_type.get(row["type"], 0) + 1
+    print("索引 -> scripts/tg_posts.json（%d 条：%s）"
+          % (len(index), " / ".join("%s %d" % (k, v) for k, v in sorted(by_type.items()))))
+    print("新增 %d / 更新 %d / 跳过 %d / 换位置 %d / 移除 %d | 媒体 %d 张 %.1f MB | 视频 %.1f MB"
+          % (stats["new"], stats["updated"], stats["skipped"], stats["moved"], stats["removed"],
+             stats["media"], stats["img_bytes"] / 1e6, stats["video_bytes"] / 1e6))
     print("reaction 播种 %d 条帖子 -> scripts/tg-reactions-seed.json" % len(seed))
     print("待确认分类 %d 条 -> scripts/tg-review.md" % len(rev_rows))
 

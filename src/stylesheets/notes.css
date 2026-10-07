@@ -1,0 +1,60 @@
+/* 碎碎念时间线 + 识别出来的音游成绩卡（全站零 CDN，用 Material 自带变量配色） */
+
+.tl { margin: 1.2rem 0 0; }
+.tl-day { display: flex; gap: 1rem; margin: 0 0 1.7rem; }
+.tl-date { flex: 0 0 4.4rem; text-align: right; padding-top: .05rem; }
+.tl-date b { display: block; font-size: 1.45rem; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.tl-date span { font-size: .6rem; color: var(--md-default-fg-color--light); }
+.tl-items { flex: 1; min-width: 0; border-left: 2px solid var(--md-default-fg-color--lightest); padding-left: 1.1rem; }
+.tl-item { position: relative; margin: 0 0 1.25rem; }
+.tl-item::before { content: ""; position: absolute; left: -1.55rem; top: .42rem;
+                   width: .52rem; height: .52rem; border-radius: 50%; background: var(--md-primary-fg-color); }
+.tl-head { display: flex; gap: .5rem; align-items: baseline; flex-wrap: wrap; font-size: .68rem; }
+.tl-time { color: var(--md-primary-fg-color); text-decoration: none; font-variant-numeric: tabular-nums; }
+.tl-time:hover { text-decoration: underline; }
+.tl-songs { color: var(--md-default-fg-color--light); font-size: .66rem; }
+.tl-tg { color: var(--md-default-fg-color--light); font-size: .64rem; opacity: .8; }
+.tl-text { margin: .4rem 0 .55rem; white-space: pre-wrap; word-break: break-word; }
+.tl-media { display: flex; gap: .35rem; flex-wrap: wrap; align-items: center; margin-bottom: .2rem; }
+.tl-media img { width: 6.2rem; height: 6.2rem; object-fit: cover; border-radius: .35rem;
+                border: 1px solid var(--md-default-fg-color--lightest); display: block; }
+.tl-more { font-size: .66rem; color: var(--md-default-fg-color--light); }
+
+.badge { font-size: .62rem; padding: .05rem .4rem; border-radius: .8rem;
+         border: 1px solid var(--md-default-fg-color--lightest); color: var(--md-default-fg-color--light); }
+.badge.b-score { border-color: #2f9e44; color: #2f9e44; }
+.badge.b-post { border-color: var(--md-primary-fg-color); color: var(--md-primary-fg-color); }
+
+/* 碎碎念单页：回时间线的入口 */
+.note-back { margin: 0 0 .8rem; }
+.note-back a { font-size: .72rem; color: var(--md-default-fg-color--light); text-decoration: none; }
+.note-back a:hover { color: var(--md-primary-fg-color); }
+
+/* 成绩卡：曲绘 + 曲名 + 分数 + 评级 */
+.arc-cards { margin: .5rem 0 .3rem; }
+.arc-cards-head { font-size: .66rem; color: var(--md-default-fg-color--light);
+                  margin: 0 0 .35rem; text-transform: none; }
+.arc-cards-head span { opacity: .65; margin-left: .3rem; }
+.arc-card { display: inline-flex; align-items: center; gap: .55rem; margin: 0 .4rem .4rem 0;
+            padding: .3rem .6rem; border-radius: .5rem; text-decoration: none; color: inherit;
+            border: 1px solid var(--md-default-fg-color--lightest); background: var(--md-code-bg-color); }
+.arc-card:hover { border-color: var(--md-primary-fg-color); }
+.arc-card img { width: 2.6rem; height: 2.6rem; border-radius: .3rem; object-fit: cover; display: block; }
+.arc-cmeta { display: flex; flex-direction: column; min-width: 0; }
+.arc-cmeta b { font-size: .8rem; line-height: 1.2; }
+.arc-cmeta small { font-size: .62rem; color: var(--md-default-fg-color--light); }
+.arc-cnum { font-variant-numeric: tabular-nums; font-weight: 700; }
+.arc-grade { font-size: .62rem; border: 1px solid currentColor; border-radius: .3rem;
+             padding: 0 .25rem; color: var(--md-default-fg-color--light); }
+
+/* /notes/ 总览：月份卡片 */
+.nt-months { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0 1.2rem; }
+.nt-month { display: flex; flex-direction: column; gap: .1rem; padding: .5rem .8rem;
+            border: 1px solid var(--md-default-fg-color--lightest); border-radius: .5rem;
+            text-decoration: none; color: inherit; min-width: 8rem; }
+.nt-month:hover { border-color: var(--md-primary-fg-color); }
+.nt-month b { font-size: .82rem; }
+.nt-month span { font-size: .64rem; color: var(--md-default-fg-color--light); }
+
+/* 后台把帖子隐藏/换算状态后，镜像上是即时生效的（前端覆盖显示） */
+.is-hidden { display: none !important; }
