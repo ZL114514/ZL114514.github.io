@@ -6,9 +6,11 @@
   margin: .35rem 0 .2rem;
 }
 
-/* 一条表情都没有时：这行压成 0 高，＋ 浮在右下角，hover 才出现 —— 不留大片空白 */
-.tg-rx:not(:has(.tg-rx-btn:not(.tg-rx-plus))) { position: relative; height: 0; margin: 0; }
-.tg-rx:not(:has(.tg-rx-btn:not(.tg-rx-plus))) .tg-rx-add { position: absolute; right: 0; bottom: 0; }
+/* 一条表情都没有时：这行压成 0 高，＋ 浮在右下角，hover 才出现 —— 不留大片空白。
+   注意用「直接子元素」判断：＋ 和表情面板都在 .tg-rx-add 里，
+   面板里那 25 个 .tg-rx-btn 不能算成"有表情"（否则这条规则永远不生效）。 */
+.tg-rx:not(:has(> .tg-rx-btn)) { position: relative; height: 0; margin: 0; }
+.tg-rx:not(:has(> .tg-rx-btn)) .tg-rx-add { position: absolute; right: 0; bottom: 0; }
 
 .tg-rx-btn {
   display: inline-flex;
