@@ -16,7 +16,7 @@
 .tl-tg { color: var(--md-default-fg-color--light); font-size: .64rem; opacity: .8; }
 .tl-text { margin: .4rem 0 .55rem; white-space: pre-wrap; word-break: break-word; }
 .tl-media { display: flex; gap: .35rem; flex-wrap: wrap; align-items: center; margin-bottom: .2rem; }
-.tl-media img { width: 6.2rem; height: 6.2rem; object-fit: cover; border-radius: .35rem;
+.tl-media img { max-height: 13rem; max-width: 100%; width: auto; height: auto; border-radius: .35rem;
                 border: 1px solid var(--md-default-fg-color--lightest); display: block; }
 .tl-more { font-size: .66rem; color: var(--md-default-fg-color--light); }
 
@@ -39,7 +39,8 @@
             padding: .3rem .6rem; border-radius: .5rem; text-decoration: none; color: inherit;
             border: 1px solid var(--md-default-fg-color--lightest); background: var(--md-code-bg-color); }
 .arc-card:hover { border-color: var(--md-primary-fg-color); }
-.arc-card img { width: 2.6rem; height: 2.6rem; border-radius: .3rem; object-fit: cover; display: block; }
+.arc-card img { width: 2.6rem; height: 2.6rem; border-radius: .3rem; object-fit: contain;
+              background: var(--md-code-bg-color); display: block; }
 .arc-cmeta { display: flex; flex-direction: column; min-width: 0; }
 .arc-cmeta b { font-size: .8rem; line-height: 1.2; }
 .arc-cmeta small { font-size: .62rem; color: var(--md-default-fg-color--light); }

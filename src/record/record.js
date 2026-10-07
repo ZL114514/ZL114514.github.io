@@ -10,9 +10,64 @@
   const GRADE_ORDER = ['PURE MEMORY', 'EX+', 'EX', 'AA', 'A', 'B', 'C', 'D'];
   const fmt = (n) => (n == null ? '—' : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "'"));
 
+  const WEEK_JP = ['日', '月', '火', '水', '木', '金', '土'];
+
   let all = [];      // deduped, one entry per song
-  let view = 'song'; // song | log
+  let view = 'time'; // time（时间线，默认）| song（按曲目去重）| log（全部记录）
   let q = '', set = '', grade = '', sort = 'score';
+
+  // 成绩库的时间线：碎碎念里识别出来的带日期；早期批量识别的没日期，另起一组
+  function dayLabel(d) {
+    const w = WEEK_JP[new Date(d + 'T00:00:00').getDay()] || '';
+    return { day: d.slice(8, 10), label: d.slice(0, 7) + ' · ' + w };
+  }
+
+  function timeRow(r) {
+    const img = r.jacket
+      ? '<img class="arc-tl-jk" loading="lazy" src="jackets/' + esc(r.jacket) + '" alt="">'
+      : '<div class="arc-ph arc-tl-jk"></div>';
+    const src = r.from_url
+      ? '<a class="arc-tag" href="' + esc(r.from_url) + '">' + esc(r.from || '碎碎念') + '</a>'
+      : (r.from ? '<span class="arc-tag">' + esc(r.from) + '</span>' : '');
+    return (
+      '<div class="arc-tl-item">' + img +
+      '<div class="arc-meta">' +
+      '<div class="arc-title">' + esc(r.title) + '</div>' +
+      '<div class="arc-sub">' + esc(r.artist) + '</div>' +
+      '<div class="arc-tags">' + src +
+      (r.set ? '<span class="arc-tag">' + esc(r.set) + '</span>' : '') + '</div>' +
+      '</div>' +
+      '<div class="arc-score">' +
+      '<div class="arc-num">' + esc(fmt(r.score)) + '</div>' +
+      '<div class="arc-grade" data-g="' + esc(r.grade) + '">' + esc(r.grade) + '</div>' +
+      '</div></div>'
+    );
+  }
+
+  function paintTime(rows) {
+    const dated = rows.filter((r) => r.date).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    const undated = rows.filter((r) => !r.date).sort((a, b) => b.score - a.score);
+    const days = [];
+    dated.forEach((r) => {
+      const d = String(r.date).slice(0, 10);
+      const last = days[days.length - 1];
+      if (!last || last.d !== d) { days.push({ d: d, items: [r] }); } else { last.items.push(r); }
+    });
+    if (!days.length && !undated.length) { return '<p class="arc-empty">没有匹配的记录</p>'; }
+    let out = '<div class="arc-tl">';
+    days.forEach((g) => {
+      const lb = dayLabel(g.d);
+      out += '<div class="arc-tl-day"><div class="arc-tl-date"><b>' + esc(lb.day) + '</b><span>' +
+             esc(lb.label) + '</span></div><div class="arc-tl-items">' +
+             g.items.map(timeRow).join('') + '</div></div>';
+    });
+    if (undated.length) {
+      out += '<div class="arc-tl-day"><div class="arc-tl-date"><b>—</b><span>无日期</span></div>' +
+             '<div class="arc-tl-items"><p class="arc-sub">曲库存档（早期批量识别，没记日期）</p>' +
+             undated.map(timeRow).join('') + '</div></div>';
+    }
+    return out + '</div>';
+  }
 
   // 两张数据源：records.json（早期批量识别）+ records-notes.json（碎碎念里识别出来的）
   const SOURCES = ['records.json', 'records-notes.json'];
@@ -88,7 +143,12 @@
       '<option value="title">按曲名</option>' +
       '<option value="grade">按评级</option>' +
       '</select>' +
-      '<button id="arc-view" type="button" aria-pressed="false">去重视图</button>' +
+      '<span class="arc-views">' +
+      '<button type="button" data-view="time">时间线</button>' +
+      '<button type="button" data-view="song">按曲目</button>' +
+      '<button type="button" data-view="log">全部记录</button>' +
+      '</span>' +
+      '<a class="arc-official" href="https://arcaea.lowiro.com/zh/profile/" target="_blank" rel="noopener">官方档案 ↗</a>' +
       '</div>' +
       '<div class="arc-list" id="arc-list"></div>';
 
@@ -96,11 +156,17 @@
     root.querySelector('#arc-set').addEventListener('change', (e) => { set = e.target.value; paint(rows, songs); });
     root.querySelector('#arc-grade').addEventListener('change', (e) => { grade = e.target.value; paint(rows, songs); });
     root.querySelector('#arc-sort').addEventListener('change', (e) => { sort = e.target.value; paint(rows, songs); });
-    root.querySelector('#arc-view').addEventListener('click', (e) => {
-      view = view === 'song' ? 'log' : 'song';
-      e.target.setAttribute('aria-pressed', view === 'song' ? 'false' : 'true');
-      e.target.textContent = view === 'song' ? '去重视图' : '全部记录';
+    root.querySelector('.arc-views').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-view]');
+      if (!btn) { return; }
+      view = btn.getAttribute('data-view');
+      [].forEach.call(root.querySelectorAll('.arc-views button'), (b) => {
+        b.classList.toggle('on', b === btn);
+      });
       paint(rows, songs);
+    });
+    [].forEach.call(root.querySelectorAll('.arc-views button'), (b) => {
+      b.classList.toggle('on', b.getAttribute('data-view') === view);
     });
   }
 
@@ -120,13 +186,16 @@
       return true;
     });
 
+    const list = root.querySelector('#arc-list');
+    if (view === 'time') {
+      list.innerHTML = paintTime(out);      // 时间线按日期分组，不再走下面的排序
+      return;
+    }
     out.sort((a, b) => {
       if (sort === 'title') return String(a.title).localeCompare(String(b.title));
       if (sort === 'grade') return GRADE_ORDER.indexOf(a.grade) - GRADE_ORDER.indexOf(b.grade) || b.score - a.score;
       return b.score - a.score;
     });
-
-    const list = root.querySelector('#arc-list');
     if (!out.length) {
       list.innerHTML = '<p class="arc-empty">没有匹配的记录</p>';
       return;

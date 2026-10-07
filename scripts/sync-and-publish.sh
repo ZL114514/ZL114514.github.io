@@ -17,13 +17,24 @@ MODE=$([ "$LIGHT" = 1 ] && echo 轻量 || echo 全量)
 # 两个计划任务（6 小时 / 10 分钟）可能撞车：目录锁串行化，陈旧锁自动接管
 LOCK="scripts/.sync.lock"
 if ! mkdir "$LOCK" 2>/dev/null; then
-  if [ -n "$(find "$LOCK" -maxdepth 0 -mmin +30 2>/dev/null)" ]; then
+  # 锁里记了 pid：进程没了（被 kill / 断电）就是陈锁，直接接管；
+  # 没有 pid 文件的旧锁或超过 30 分钟的也当陈锁 —— 否则一次异常退出会让同步永远跳过
+  STALE=0
+  if [ -f "$LOCK/pid" ]; then
+    kill -0 "$(cat "$LOCK/pid" 2>/dev/null)" 2>/dev/null || STALE=1
+  else
+    STALE=1
+  fi
+  [ -n "$(find "$LOCK" -maxdepth 0 -mmin +30 2>/dev/null)" ] && STALE=1
+  if [ "$STALE" = "1" ]; then
+    echo "=== $(date '+%F %T') 接管陈锁（$LOCK）===" >>"$LOG"
     rm -rf "$LOCK"; mkdir "$LOCK" 2>/dev/null || exit 0
   else
     echo "=== $(date '+%F %T') 已有同步在跑，跳过 ===" >>"$LOG"; exit 0
   fi
 fi
-trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
+echo $$ >"$LOCK/pid"
+trap 'rm -rf "$LOCK" 2>/dev/null || true' EXIT
 
 {
   echo "=== $(date '+%F %T') 同步开始（$MODE）==="

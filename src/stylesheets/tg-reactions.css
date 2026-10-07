@@ -3,8 +3,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: .4rem;
-  margin: 1.2rem 0 .6rem;
+  margin: .35rem 0 .2rem;
 }
+
+/* 一条表情都没有时：这行压成 0 高，＋ 浮在右下角，hover 才出现 —— 不留大片空白 */
+.tg-rx:not(:has(.tg-rx-btn:not(.tg-rx-plus))) { position: relative; height: 0; margin: 0; }
+.tg-rx:not(:has(.tg-rx-btn:not(.tg-rx-plus))) .tg-rx-add { position: absolute; right: 0; bottom: 0; }
 
 .tg-rx-btn {
   display: inline-flex;

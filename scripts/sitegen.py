@@ -136,6 +136,38 @@ def weekday_of(date):
         return ""
 
 
+# ---------------------------------------------------------------- 行内 Markdown
+
+MD_LINK = re.compile(r"\[([^\]\n]+)\]\(([^\s)]+)\)?")
+# TG 里经常有被截断的链接（[标题](https://… 没有右括号），所以右括号可有可无
+BARE_URL = re.compile(r"(?<![\"'>=/])(https?://[^\s<>\"']+)")
+
+
+def _autolink(s):
+    return BARE_URL.sub(lambda m: '<a href="%s" target="_blank" rel="noopener">%s</a>'
+                        % (m.group(1), m.group(1)), s)
+
+
+def md_inline(text):
+    """时间线正文：先转义，再把最常用的几种 Markdown 认回来（链接/粗体/行内代码）。
+
+    只做行内语法，块级交给 MkDocs 的单页正文（那边是真 Markdown）。"""
+    s = esc(text)
+    s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+    s = re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", s)
+    out, pos = [], 0
+    for m in MD_LINK.finditer(s):
+        out.append(_autolink(s[pos:m.start()]))
+        href = m.group(2)
+        if href.startswith(("http://", "https://", "/")):
+            out.append('<a href="%s" target="_blank" rel="noopener">%s</a>' % (href, m.group(1)))
+        else:
+            out.append(m.group(0))
+        pos = m.end()
+    out.append(_autolink(s[pos:]))
+    return "".join(out)
+
+
 # ---------------------------------------------------------------- 片段
 
 def score_cards(records):
@@ -180,7 +212,7 @@ def item_html(r):
     out.append('</div>')
     text = (r.get("text") or "").strip()
     if text:
-        out.append('<div class="tl-text">%s</div>' % esc(text).replace("\n", "<br>"))
+        out.append('<div class="tl-text">%s</div>' % md_inline(text).replace("\n", "<br>"))
     imgs = [i for i in (r.get("images") or []) if i.endswith((".jpg", ".jpeg", ".png", ".webp"))]
     vids = [i for i in (r.get("images") or []) if i.endswith(".mp4")]
     if imgs or vids:
@@ -308,8 +340,10 @@ def update_nav(months):
     write(MKDOCS, s[:a] + "# <<notes-nav>>\n" + items + s[b:])
 
 
-def records_notes():
-    """识别出来的成绩 -> /record/ 那一页的数据格式。"""
+def records_notes(date_by_post=None, url_by_post=None):
+    """识别出来的成绩 -> /record/ 那一页的数据格式（带原帖日期，成绩库按时间线排）。"""
+    date_by_post = date_by_post or {}
+    url_by_post = url_by_post or {}
     try:
         with open(RECORDS_POST, encoding="utf-8") as f:
             src = json.load(f)
@@ -327,7 +361,8 @@ def records_notes():
                      "min_digit_conf": r.get("min_digit_conf"),
                      "song_ok": True, "score_ok": r.get("score") is not None,
                      "from": "碎碎念 #%s" % r.get("post"), "post": r.get("post"),
-                     "date": r.get("date") or ""})
+                     "from_url": url_by_post.get(str(r.get("post"))) or "",
+                     "date": date_by_post.get(str(r.get("post"))) or r.get("date") or ""})
     return rows
 
 
@@ -374,7 +409,9 @@ def main():
           json.dumps(content_json(rows, counts), ensure_ascii=False, indent=0) + "\n")
     # /record/ 的来源二：碎碎念里识别出来的成绩
     write(os.path.join(RECORD, "records-notes.json"),
-          json.dumps(records_notes(), ensure_ascii=False, indent=1) + "\n")
+          json.dumps(records_notes({str(r["id"]): r.get("date") or "" for r in rows},
+                                   {str(r["id"]): r.get("url") or "" for r in rows}),
+                     ensure_ascii=False, indent=1) + "\n")
 
     if CHANGED:
         print("改写 %d 个文件（%s…）" % (len(CHANGED), ", ".join(CHANGED[:3])))

@@ -95,3 +95,27 @@
   #arc .arc-row img, #arc .arc-ph { width: 64px; height: 64px; }
   #arc .arc-score { grid-column: 2; text-align: left; }
 }
+
+/* 视图切换 + 官方档案入口 */
+.arc-views { display: inline-flex; border: 1px solid var(--md-default-fg-color--lightest);
+             border-radius: 1rem; overflow: hidden; }
+.arc-views button { padding: .25rem .8rem; font-size: .72rem; border: 0; cursor: pointer;
+                    background: transparent; color: var(--md-default-fg-color--light); }
+.arc-views button.on { background: var(--md-primary-fg-color); color: var(--md-primary-bg-color); }
+.arc-official { margin-left: auto; font-size: .72rem; text-decoration: none;
+                color: var(--md-primary-fg-color); white-space: nowrap; }
+
+/* 时间线视图：和 /notes/ 一个语汇 —— 左边日期桩 + 竖线 + 圆点 */
+.arc-tl { margin: 1rem 0 0; }
+.arc-tl-day { display: flex; gap: 1rem; margin: 0 0 1.5rem; }
+.arc-tl-date { flex: 0 0 4.4rem; text-align: right; padding-top: .05rem; }
+.arc-tl-date b { display: block; font-size: 1.45rem; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.arc-tl-date span { font-size: .6rem; color: var(--md-default-fg-color--light); }
+.arc-tl-items { flex: 1; min-width: 0; border-left: 2px solid var(--md-default-fg-color--lightest); padding-left: 1.1rem; }
+.arc-tl-item { position: relative; display: flex; align-items: center; gap: .7rem; margin: 0 0 .9rem; }
+.arc-tl-item::before { content: ""; position: absolute; left: -1.55rem; top: 50%; margin-top: -.26rem;
+                       width: .52rem; height: .52rem; border-radius: 50%; background: var(--md-primary-fg-color); }
+.arc-tl-jk { width: 2.6rem; height: 2.6rem; border-radius: .3rem; object-fit: contain;
+             background: var(--md-code-bg-color); display: block; }
+.arc-tl-item .arc-meta { flex: 1; min-width: 0; }
+.arc-tl-item .arc-score { text-align: right; }
