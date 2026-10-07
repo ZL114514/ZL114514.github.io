@@ -37,10 +37,22 @@ def esc(s):
     return "".join(ESC.get(c, c) for c in str(s if s is not None else ""))
 
 
+CHANGED = []
+
+
 def write(path, text):
+    """内容没变就不落盘 —— mtime 一抖，mkdocs 的 sitemap lastmod 就跟着变，
+    10 分钟一次的轻量同步就会变成 10 分钟一次的空提交。"""
     os.makedirs(os.path.dirname(path), exist_ok=True)
+    if os.path.exists(path):
+        try:
+            if open(path, encoding="utf-8").read() == text:
+                return
+        except Exception:
+            pass
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
+    CHANGED.append(os.path.relpath(path, REPO))
 
 
 # ---------------------------------------------------------------- 从 X99 拉状态
@@ -263,8 +275,7 @@ def content_json(rows, counts):
             "tg_link", "type", "hidden", "records", "cats")
     out = [{k: r.get(k) for k in keep} for r in rows]
     out.sort(key=lambda r: (r.get("date") or "", int(r["id"])), reverse=True)
-    return {"version": 1, "generated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "counts": counts, "posts": out}
+    return {"version": 1, "counts": counts, "posts": out}
 
 
 def records_notes():
@@ -334,6 +345,8 @@ def main():
     write(os.path.join(RECORD, "records-notes.json"),
           json.dumps(records_notes(), ensure_ascii=False, indent=1) + "\n")
 
+    if CHANGED:
+        print("改写 %d 个文件（%s…）" % (len(CHANGED), ", ".join(CHANGED[:3])))
     print("notes 总览 + %d 个月份时间线；碎碎念 %d / 已分享 %d / 音游成绩 %d / 隐藏 %d"
           % (len(months), counts.get("mutter", 0), counts.get("post", 0),
              counts.get("score", 0), counts["hidden"]))

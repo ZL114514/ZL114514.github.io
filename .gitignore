@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .cache/
 .mkdocs-cache/
+scripts/.sync.log
+scripts/.sync.lock/

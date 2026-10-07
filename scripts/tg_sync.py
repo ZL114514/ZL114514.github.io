@@ -383,6 +383,19 @@ def download(url, path, recompress=False):
     return True
 
 
+def write_if_changed(path, text):
+    """内容没变就不落盘：文件 mtime 稳定，sitemap 的 lastmod 才不会每次同步都跳。"""
+    if os.path.exists(path):
+        try:
+            if open(path, encoding="utf-8").read() == text:
+                return False
+        except Exception:
+            pass
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+    return True
+
+
 def read_front_matter(path):
     if not os.path.exists(path):
         return {}, ""
@@ -684,9 +697,10 @@ def main():
                     old_cats = [c.strip() for c in cats]
         if dest:
             os.makedirs(os.path.dirname(dest), exist_ok=True)
-            with open(dest, "w", encoding="utf-8", newline="\n") as f:
-                f.write(render(p, media, videos, old_cats, st))
-            stats["updated" if old_path == dest else "new"] += 1
+            if write_if_changed(dest, render(p, media, videos, old_cats, st)):
+                stats["updated" if old_path == dest else "new"] += 1
+            else:
+                stats["same"] = stats.get("same", 0) + 1
         for c in cands:                           # 换位置/隐藏：清掉旧文件
             if c != dest and os.path.exists(c):
                 os.remove(c)
@@ -749,15 +763,14 @@ def main():
                     % (pid, CH, pid, d, t.replace("|", "\\|"), n))
     with open(CACHE, "w", encoding="utf-8", newline="\n") as f:
         json.dump({"version": 1, "render": RENDER_V,
-                   "generated": time.strftime("%Y-%m-%d %H:%M:%S"),
                    "posts": posts, "index": index}, f, ensure_ascii=False, indent=0)
     by_type = {}
     for row in index:
         by_type[row["type"]] = by_type.get(row["type"], 0) + 1
     print("索引 -> scripts/tg_posts.json（%d 条：%s）"
           % (len(index), " / ".join("%s %d" % (k, v) for k, v in sorted(by_type.items()))))
-    print("新增 %d / 更新 %d / 跳过 %d / 换位置 %d / 移除 %d | 媒体 %d 张 %.1f MB | 视频 %.1f MB"
-          % (stats["new"], stats["updated"], stats["skipped"], stats["moved"], stats["removed"],
+    print("新增 %d / 更新 %d / 未变 %d / 跳过 %d / 换位置 %d / 移除 %d | 媒体 %d 张 %.1f MB | 视频 %.1f MB"
+          % (stats["new"], stats["updated"], stats.get("same", 0), stats["skipped"], stats["moved"], stats["removed"],
              stats["media"], stats["img_bytes"] / 1e6, stats["video_bytes"] / 1e6))
     print("reaction 播种 %d 条帖子 -> scripts/tg-reactions-seed.json" % len(seed))
     print("待确认分类 %d 条 -> scripts/tg-review.md" % len(rev_rows))
