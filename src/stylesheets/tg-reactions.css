@@ -52,6 +52,7 @@
 .tg-rx-add { position: relative; display: inline-flex;
              opacity: 0; pointer-events: none; transition: opacity .15s; }
 /* 悬停条目 / 键盘焦点进入 / 面板已打开：才把「添加表情」露出来 */
+.tl-item:hover .tg-rx-add,          /* 悬停整条碎碎念也把「添加表情」带出来 */
 .tg-rx:hover .tg-rx-add,
 .tg-rx:focus-within .tg-rx-add,
 .tg-rx-add.open,
