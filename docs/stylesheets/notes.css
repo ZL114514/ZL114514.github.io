@@ -47,6 +47,16 @@
 .arc-grade { font-size: .62rem; border: 1px solid currentColor; border-radius: .3rem;
              padding: 0 .25rem; color: var(--md-default-fg-color--light); }
 
+/* /notes/ 顶部：滚到底自动接上更早的月份（no-JS 时这里就是个摆设，兜底在下面 details 里） */
+.tl-next { display: flex; justify-content: center; margin: 1.4rem 0 1.8rem; }
+.tl-next span { font-size: .72rem; color: var(--md-default-fg-color--light); padding: .3rem .9rem;
+                border: 1px dashed var(--md-default-fg-color--lightest); border-radius: 1rem; }
+.tl-next.loading span { border-style: solid; }
+.tl-next.loading span::after { content: "…"; }
+.nt-fallback { margin: 1.2rem 0 0; font-size: .74rem; color: var(--md-default-fg-color--light); }
+.nt-fallback summary { cursor: pointer; }
+.nt-fallback .nt-months { margin-top: .8rem; }
+
 /* /notes/ 总览：月份卡片 */
 .nt-months { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0 1.2rem; }
 .nt-month { display: flex; flex-direction: column; gap: .1rem; padding: .5rem .8rem;

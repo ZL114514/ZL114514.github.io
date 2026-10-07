@@ -29,6 +29,7 @@ SITE_STATE = os.path.join(REPO, "scripts", "site_state.json")
 RECORDS_POST = os.path.join(REPO, "scripts", "records_post.json")
 SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20", "x99"]
 WEEK = "一二三四五六日"
+WEEK_JP = "月火水木金土日"   # 日式：月曜=周一 … 日曜=周日
 TYPE_TXT = {"mutter": "碎碎念", "post": "博文", "score": "音游成绩"}
 ESC = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}
 
@@ -130,7 +131,7 @@ def month_label(ym):
 
 def weekday_of(date):
     try:
-        return WEEK[datetime.strptime(date[:10], "%Y-%m-%d").weekday()]
+        return WEEK_JP[datetime.strptime(date[:10], "%Y-%m-%d").weekday()]
     except Exception:
         return ""
 
@@ -199,18 +200,27 @@ def item_html(r):
     return "".join(out)
 
 
-def timeline_html(rows):
-    """按天分组的时间线（同一天一个日期桩）。"""
+def timeline_html(rows, ym=None, prev=None, nxt=None):
+    """按天分组的时间线（同一天一个日期桩）。
+
+    ym/prev/nxt 写进 .tl 的 data-*，/notes/ 的「连贯加载」靠它找上一批。"""
     days, out = [], []
     for r in rows:
         d = (r.get("date") or "")[:10]
         if not days or days[-1][0] != d:
             days.append((d, []))
         days[-1][1].append(r)
-    out.append('<div class="tl">')
+    attrs = ""
+    if ym:
+        attrs += ' data-month="%s"' % esc(ym)
+    if prev:
+        attrs += ' data-prev="%s"' % esc(prev)
+    if nxt:
+        attrs += ' data-next="%s"' % esc(nxt)
+    out.append('<div class="tl"%s>' % attrs)
     for d, items in days:
-        out.append('<div class="tl-day"><div class="tl-date"><b>%s</b><span>%s · 周%s</span></div>'
-                   '<div class="tl-items">' % (esc(d[8:10]), esc(d), esc(weekday_of(d))))
+        out.append('<div class="tl-day"><div class="tl-date"><b>%s</b><span>%s %s</span></div>'
+                   '<div class="tl-items">' % (esc(d[8:10]), esc(d[2:7]), esc(weekday_of(d))))
         out.extend(item_html(r) for r in items)
         out.append('</div></div>')
     out.append('</div>')
@@ -234,40 +244,43 @@ def month_page(ym, rows, months):
         meta.append("%d 条带图" % with_img)
     if scores:
         meta.append("%d 个成绩" % scores)
+    prev_m = months[i + 1] if i + 1 < len(months) else None
+    next_m = months[i - 1] if i > 0 else None
     return ("---\ntitle: 碎碎念 · %s\n---\n\n# 碎碎念 · %s\n\n%s · %s\n\n%s\n"
             % (month_label(ym), month_label(ym), " · ".join(meta), " ".join(navl),
-               timeline_html(rows)))
+               timeline_html(rows, ym=ym, prev=prev_m, nxt=next_m)))
 
 
 def overview_page(rows, months, counts):
+    """/notes/：最新在前的一条连贯时间线（滚到底自动接更早的月份，兜底给按月目录）。"""
     live = [r for r in rows if not r.get("hidden") and r.get("type") != "post"]
+    live = live[::-1]                                   # 缓存是旧→新，这里翻成最新在前
     parts = []
-    if rows:
+    if live:
         parts.append("共 %d 条" % len(live))
         if counts.get("score"):
             parts.append("%d 条是音游成绩" % counts["score"])
-        parts.append("%s → %s" % ((rows[-1].get("date") or "")[:10], (rows[0].get("date") or "")[:10]))
-    months_html = ['<div class="nt-months">']
+        parts.append("%s → %s" % ((live[-1].get("date") or "")[:10], (live[0].get("date") or "")[:10]))
+
+    first = live[:24]                                   # 首屏先给最新 24 条
+    nxt = first[-1].get("month") if first else None
+    feed = timeline_html(first, ym=nxt)
+    if nxt and nxt != months[-1]:
+        feed += '<div class="tl-next" data-next="%s"><span>加载更早的碎碎念…</span></div>' % esc(nxt)
+
+    links = []
     for ym in months:
         n = sum(1 for r in live if r.get("month") == ym)
         if not n:
             continue
-        img = sum(1 for r in live if r.get("month") == ym and r.get("images"))
-        sc = sum(len(r.get("records") or []) for r in live if r.get("month") == ym)
-        info = ["%d 条" % n]
-        if img:
-            info.append("%d 带图" % img)
-        if sc:
-            info.append("%d 成绩" % sc)
-        months_html.append('<a class="nt-month" href="/notes/%s/"><b>%s</b><span>%s</span></a>'
-                           % (ym, esc(month_label(ym)), esc(" · ".join(info))))
-    months_html.append('</div>')
-    latest = live[:12]
+        links.append('<a class="nt-month" href="/notes/%s/"><b>%s</b><span>%d 条</span></a>'
+                     % (esc(ym), esc(month_label(ym)), n))
     return ("---\ntitle: 碎碎念\n---\n\n# 碎碎念\n\n"
             "Telegram 频道同步下来的零碎内容（不掺进 [博客](/blog/)）。"
             "音游成绩那部分识别出来的卡片，另在 [成绩库](/record/) 汇总。\n\n"
-            "%s\n\n## 按月翻\n\n%s\n\n## 最新\n\n%s\n"
-            % (" · ".join(parts), "".join(months_html), timeline_html(latest)))
+            "%s\n\n%s\n\n<details class=\"nt-fallback\"><summary>按月翻（%d 个月）</summary>"
+            "<div class=\"nt-months\">%s</div></details>\n"
+            % (" · ".join(parts), feed, len(months), "".join(links)))
 
 
 def content_json(rows, counts):
@@ -276,6 +289,23 @@ def content_json(rows, counts):
     out = [{k: r.get(k) for k in keep} for r in rows]
     out.sort(key=lambda r: (r.get("date") or "", int(r["id"])), reverse=True)
     return {"version": 1, "counts": counts, "posts": out}
+
+
+MKDOCS = os.path.join(REPO, "mkdocs.yml")
+
+
+def update_nav(months):
+    """把月份列表写进 mkdocs.yml 的「碎碎念」子目录（侧边目录里按月翻）。"""
+    try:
+        with open(MKDOCS, encoding="utf-8") as f:
+            s = f.read()
+    except OSError:
+        return
+    a, b = s.find("# <<notes-nav>>"), s.find("# <</notes-nav>>")
+    if a < 0 or b < a:
+        return
+    items = "".join("      - %s: notes/%s/index.md\n" % (month_label(ym), ym) for ym in months)
+    write(MKDOCS, s[:a] + "# <<notes-nav>>\n" + items + s[b:])
 
 
 def records_notes():
@@ -331,6 +361,7 @@ def main():
         write(os.path.join(NOTES, ym, "index.md"),
               month_page(ym, [r for r in live if r["month"] == ym], months))
     write(os.path.join(NOTES, "index.md"), overview_page(rows, months, counts))
+    update_nav(months)
     # 清掉没有碎碎念的月份目录（页面都重建，产物不会残留；src 里的旧目录要删）
     for d in sorted(os.listdir(NOTES)) if os.path.isdir(NOTES) else []:
         full = os.path.join(NOTES, d)

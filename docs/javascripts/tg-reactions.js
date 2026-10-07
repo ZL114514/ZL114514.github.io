@@ -90,6 +90,7 @@
     b.addEventListener("click", function (ev) {
       ev.stopPropagation();
       panel.hidden = !panel.hidden;
+      wrap.classList.toggle("open", !panel.hidden);   // 面板开着时 hover 样式别把它藏了
     });
     wrap.appendChild(b);
     wrap.appendChild(panel);
@@ -155,9 +156,15 @@
     var panels = document.querySelectorAll(".tg-rx-panel");
     for (var i = 0; i < panels.length; i++) {
       var p = panels[i];
-      if (!p.hidden && p.parentNode && !p.parentNode.contains(ev.target)) { p.hidden = true; }
+      if (!p.hidden && p.parentNode && !p.parentNode.contains(ev.target)) {
+        p.hidden = true;
+        if (p.parentNode.classList) { p.parentNode.classList.remove("open"); }
+      }
     }
   });
+
+  // /notes/ 的连贯加载追加出来的条目要重新渲染一遍
+  document.addEventListener("zl:tl-appended", init);
 
   // Material 的 instant loading 不会重发 DOMContentLoaded，要挂 document$
   if (window.document$ && typeof window.document$.subscribe === "function") {

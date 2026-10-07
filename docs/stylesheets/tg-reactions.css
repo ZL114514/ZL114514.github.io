@@ -49,7 +49,15 @@
 .tg-rx-tip { font-size: .68rem; color: var(--md-default-fg-color--light); }
 
 /* ＋ 添加表情：按钮 + 弹出的表情面板 */
-.tg-rx-add { position: relative; display: inline-flex; }
+.tg-rx-add { position: relative; display: inline-flex;
+             opacity: 0; pointer-events: none; transition: opacity .15s; }
+/* 悬停条目 / 键盘焦点进入 / 面板已打开：才把「添加表情」露出来 */
+.tg-rx:hover .tg-rx-add,
+.tg-rx:focus-within .tg-rx-add,
+.tg-rx-add.open,
+.tg-rx:has(.tg-rx-panel:not([hidden])) .tg-rx-add { opacity: 1; pointer-events: auto; }
+/* 触屏没有 hover：一直显示 */
+@media (hover: none) { .tg-rx-add { opacity: 1; pointer-events: auto; } }
 
 .tg-rx-plus { padding: .22rem .5rem; font-size: .82rem; }
 

@@ -105,13 +105,20 @@
     if (!seen) { return; }
   }
 
+  var STATE = null;
+
   function init() {
     if (!document.querySelector('[data-post]')) { return; }
     fetch(API, { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) { if (j && j.ok) { apply(j); } })
+      .then(function (j) {
+        if (j && j.ok) { STATE = j; apply(j); }
+      })
       .catch(function () { /* 没有后端（GitHub Pages）或离线：静态产物已经是构建时的状态 */ });
   }
+
+  // 连贯加载追加出来的条目的状态覆盖
+  document.addEventListener("zl:tl-appended", function () { if (STATE) { apply(STATE); } });
 
   if (window.document$ && typeof window.document$.subscribe === "function") {
     window.document$.subscribe(init);        // Material 的 instant loading 不会重发 DOMContentLoaded
@@ -120,4 +127,96 @@
   } else {
     init();
   }
+})();
+
+
+/* /notes/ 的连贯加载：滚到「加载更早的碎碎念」就把上一个月的页面拿过来，
+   抽出它 .tl 里的日期分组接到当前时间线末尾（重复的帖子按 data-post 去重）。
+   月份/前后月的线索写在 .tl 的 data-* 上，所以不用第二份数据文件。
+   静态站（GitHub Pages）上一样有效；禁 JS 时下面的「按月翻」列表兜底。 */
+(function () {
+  "use strict";
+  var box = document.querySelector(".tl-next");
+  if (!box) { return; }
+  var seen = {};
+  var loaded = 0;
+
+  function look() {
+    seen = {};
+    var list = document.querySelectorAll(".tl-item[data-post]");
+    for (var i = 0; i < list.length; i++) { seen[list[i].getAttribute("data-post")] = 1; }
+  }
+
+  function append(doc) {
+    var src = doc.querySelector(".tl");
+    var dst = document.querySelector(".tl");
+    if (!src || !dst || src === dst) { return null; }
+    var days = src.children, added = 0;
+    for (var i = 0; i < days.length; i++) {
+      var day = days[i];
+      if (day.className.indexOf("tl-day") < 0) { continue; }
+      var items = day.querySelectorAll(".tl-item[data-post]");
+      var fresh = 0;
+      for (var j = 0; j < items.length; j++) {
+        var id = items[j].getAttribute("data-post");
+        if (seen[id]) { items[j].parentNode.removeChild(items[j]); } else { seen[id] = 1; fresh++; }
+      }
+      if (fresh) { dst.appendChild(day); added += fresh; }
+    }
+    return { added: added, prev: src.getAttribute("data-prev") };
+  }
+
+  function fire() {
+    document.dispatchEvent(new CustomEvent("zl:tl-appended"));
+  }
+
+  function label(txt) {
+    var s = box.querySelector("span");
+    if (s) { s.textContent = txt; }
+  }
+
+  function load() {
+    if (box.getAttribute("data-busy")) { return; }
+    var ym = box.getAttribute("data-next");
+    if (!ym) { box.remove(); return; }
+    box.setAttribute("data-busy", "1");
+    box.classList.add("loading");
+    fetch("/notes/" + ym + "/", { credentials: "same-origin" })
+      .then(function (r) { if (!r.ok) { throw new Error(String(r.status)); } return r.text(); })
+      .then(function (html) {
+        var res = append(new DOMParser().parseFromString(html, "text/html"));
+        if (!res) { throw new Error("no tl"); }
+        // added=0 是正常的：哨兵那个月的内容多半已经在上面的首屏里了，继续往更早走
+        if (res.added) { loaded += res.added; fire(); }
+        box.removeAttribute("data-busy");
+        box.classList.remove("loading");
+        if (res.prev) {
+          box.setAttribute("data-next", res.prev);
+          label("加载更早的碎碎念…");
+          if (visible()) { load(); }            // 还没铺满一屏就继续接
+        } else {
+          box.remove();
+        }
+      })
+      .catch(function () {
+        box.removeAttribute("data-busy");
+        box.classList.remove("loading");
+        label("这里接不上（网络或没这个月）—— 用下面的「按月翻」");
+      });
+  }
+
+  function visible() {
+    var r = box.getBoundingClientRect();
+    return r.top < (window.innerHeight || 800) + 300;
+  }
+
+  look();
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (es) {
+      for (var i = 0; i < es.length; i++) { if (es[i].isIntersecting) { load(); } }
+    }, { rootMargin: "300px 0px" }).observe(box);
+  } else {
+    window.addEventListener("scroll", function () { if (visible()) { load(); } }, { passive: true });
+  }
+  box.addEventListener("click", load);
 })();
