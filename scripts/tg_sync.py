@@ -324,7 +324,7 @@ def scrape(full, known_ids):
     return [seen[k] for k in sorted(seen)]
 
 
-RENDER_V = "r5"   # 渲染器版本：只改 render()/front matter 时把它 +1，否则帖子 hash 不变、老帖不会被重写
+RENDER_V = "r6"   # 渲染器版本：只改 render()/front matter 时把它 +1，否则帖子 hash 不变、老帖不会被重写
 
 
 def sha(post, extra=""):
