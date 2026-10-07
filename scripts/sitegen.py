@@ -219,8 +219,8 @@ def timeline_html(rows, ym=None, prev=None, nxt=None):
         attrs += ' data-next="%s"' % esc(nxt)
     out.append('<div class="tl"%s>' % attrs)
     for d, items in days:
-        out.append('<div class="tl-day"><div class="tl-date"><b>%s</b><span>%s %s</span></div>'
-                   '<div class="tl-items">' % (esc(d[8:10]), esc(d[2:7]), esc(weekday_of(d))))
+        out.append('<div class="tl-day"><div class="tl-date"><b>%s</b><span>%s · %s</span></div>'
+                   '<div class="tl-items">' % (esc(d[8:10]), esc(d[:7]), esc(weekday_of(d))))
         out.extend(item_html(r) for r in items)
         out.append('</div></div>')
     out.append('</div>')
