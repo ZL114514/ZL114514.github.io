@@ -24,6 +24,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(REPO, "src")
 NOTES = os.path.join(SRC, "notes")
 RECORD = os.path.join(SRC, "record")
+MAI = os.path.join(RECORD, "maimai")
 CACHE = os.path.join(REPO, "scripts", "tg_posts.json")
 SITE_STATE = os.path.join(REPO, "scripts", "site_state.json")
 RECORDS_POST = os.path.join(REPO, "scripts", "records_post.json")
@@ -89,6 +90,22 @@ def pull():
             print("  ✓ 曲绘 %d 张" % n)
     else:
         print("  ! 曲绘没拉到（服务端还没有识别结果？）")
+
+    # 舞萌DX：成绩 + 档位牌子 + 网页图（服务端 publish 时压到 1400px）
+    cat("/srv/zlblog/mai/records_post.json", os.path.join(MAI, "records.json"))
+    os.makedirs(MAI, exist_ok=True)
+    p = subprocess.run(SSH + ["tar czf - -C /srv/zlblog/mai icons images 2>/dev/null"],
+                       capture_output=True)
+    if p.returncode == 0 and p.stdout:
+        t = subprocess.run(["tar", "xzf", "-", "-C", MAI.replace("\\", "/")],
+                           input=p.stdout, capture_output=True)
+        if t.returncode != 0:
+            print("  ! 舞萌DX 素材解包失败：%s" % t.stderr.decode("utf-8", "replace")[:160])
+        else:
+            ni = len(os.listdir(os.path.join(MAI, "icons"))) if os.path.isdir(os.path.join(MAI, "icons")) else 0
+            print("  ✓ 舞萌DX 档位牌子 %d 张" % ni)
+    else:
+        print("  ! 舞萌DX 素材没拉到（服务端还没 publish？）")
 
 
 # ---------------------------------------------------------------- 数据

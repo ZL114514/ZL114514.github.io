@@ -77,6 +77,7 @@ nav:
       - 2025 年 1 月: notes/2025-01/index.md
 # <</notes-nav>>
   - 成绩库: record/index.md
+  - 舞萌DX: record/maimai/index.md
   - 关于: about/index.md
 
 plugins:
