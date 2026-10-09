@@ -1,5 +1,11 @@
 * text=auto eol=lf
 
+# Windows-only launchers must keep CRLF: cmd.exe mis-parses LF-only batch files
+# (it drifts a byte per line, so 'rem' lines get executed as garbage commands).
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.vbs text eol=crlf
+
 *.png binary
 *.jpg binary
 *.jpeg binary
