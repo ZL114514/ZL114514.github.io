@@ -5,9 +5,9 @@ hide:
   - toc
 ---
 
-# 你好，我是 ZL114514
+# Hi there, ZL114514
 
-折腾 Android 与 Linux 的那个人。这里放一些折腾记录、踩坑笔记和随笔。
+Design, Experience, 
 
 [:octicons-arrow-right-24: 去看博客](blog/index.md){ .md-button .md-button--primary }
 [:octicons-mail-16: 关于我](about/index.md){ .md-button }
