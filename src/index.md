@@ -7,9 +7,11 @@ hide:
 
 # Hi there, ZL114514
 
-Design, Experience, 
+Design, Experience, Rhythm  
 
-[:octicons-arrow-right-24: 去看博客](blog/index.md){ .md-button .md-button--primary }
+
+
+[:octicons-arrow-right-24: 碎碎念](note/index.md){ .md-button .md-button--primary }
 [:octicons-mail-16: 关于我](about/index.md){ .md-button }
 
 <div class="grid cards" markdown>
@@ -22,19 +24,19 @@ Design, Experience,
 
     [:octicons-arrow-right-24: 全部文章](blog/index.md)
 
--   :material-tag-outline:{ .lg .middle } __分类__
+-   :material-tag-outline:{ .lg .middle } __引诱__
 
     ---
 
-    按主题归档，找东西快一点。
+    awmc。。。
 
-    [:octicons-arrow-right-24: 浏览分类](blog/index.md)
+    [:octicons-arrow-right-24: 引诱成绩库](record/index.md)
 
 -   :material-account-outline:{ .lg .middle } __关于__
 
     ---
 
-    我是谁、在做什么、怎么联系。
+    我是谁、在做什么、
 
     [:octicons-arrow-right-24: 了解更多](about/index.md)
 
