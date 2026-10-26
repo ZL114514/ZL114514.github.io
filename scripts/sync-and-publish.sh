@@ -7,7 +7,8 @@
 # 幂等，可反复跑（tg_sync.py 只处理新增/变更/改过状态的帖子；sitegen.py 产物全是派生的）。
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
-PY="./.venv/Scripts/python"
+PY="./.venv/bin/python"
+[ -x "$PY" ] || PY="./.venv/Scripts/python"
 LOG="scripts/.sync.log"
 STAMP="scripts/.last_deploy"
 LIGHT=0
@@ -75,7 +76,11 @@ trap 'rm -rf "$LOCK" 2>/dev/null || true' EXIT
     ok=0
     STAMPABS="$(pwd)/$STAMP"
     for attempt in 1 2 3; do
-      if [ -f "$STAMP" ]; then
+      if command -v rsync >/dev/null 2>&1; then
+        # rsync 断点续传：隧道偶发断连时能接着传（tar 只能整包重来）
+        rsync -a --partial --partial-dir=.rs-partial --timeout=60 \
+          -e "ssh -o BatchMode=yes -o ConnectTimeout=20" docs/ x99:/srv/zlblog/blog/
+      elif [ -f "$STAMP" ]; then
         # 必须在 docs/ 里做 tar，否则归档里带 docs/ 前缀，会落到镜像的 <根>/docs/ 下
         (cd docs && find . -type f -newer "$STAMPABS" -print0 | tar czf - --null -T -) \
           | ssh -o BatchMode=yes -o ConnectTimeout=20 x99 'tar xzf - -C /srv/zlblog/blog'
