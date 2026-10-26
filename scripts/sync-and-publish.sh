@@ -78,7 +78,7 @@ trap 'rm -rf "$LOCK" 2>/dev/null || true' EXIT
     for attempt in 1 2 3; do
       if command -v rsync >/dev/null 2>&1; then
         # rsync 断点续传：隧道偶发断连时能接着传（tar 只能整包重来）
-        rsync -a --partial --partial-dir=.rs-partial --timeout=60 \
+        rsync -a --checksum --partial --partial-dir=.rs-partial --timeout=60 \
           -e "ssh -o BatchMode=yes -o ConnectTimeout=20" docs/ x99:/srv/zlblog/blog/
       elif [ -f "$STAMP" ]; then
         # 必须在 docs/ 里做 tar，否则归档里带 docs/ 前缀，会落到镜像的 <根>/docs/ 下
