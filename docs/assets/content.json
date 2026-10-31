@@ -1825,7 +1825,7 @@
 "text": "更搞笑的来了，为了修复pixel launcher 拿不到正确的值，不把这个特判改掉，而是把0改成了32\n[https://github.com/RisingOS-OSS/android_frameworks_base/commit/9bfb3dae50cadbc0852a6e3195bddcacec106808](https://github.com/RisingOS-OSS/android_frameworks_base/commit/9bfb3dae50cadbc0852a6e3195bddcacec106808)",
 "images": [],
 "url": "/notes/2025-10/tg-196/",
-"views": "277",
+"views": "278",
 "merged": 0,
 "tg_link": "https://t.me/zlzlzl_ch/196",
 "type": "mutter",
